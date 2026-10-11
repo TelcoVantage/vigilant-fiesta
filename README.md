@@ -35,6 +35,8 @@ Architect flow  "Branch Inbound Main"
 | `docs/02-genesys-build-runbook.md` | Step-by-step build in Genesys Cloud (queues, data table, flow, call route, trunk) |
 | `docs/03-teams-direct-routing.md` | Teams side: SBC, voice routes, resource accounts, Auto Attendants |
 | `docs/04-testing-and-operations.md` | Test plan, adding/removing a branch, troubleshooting |
+| `docs/05-conversation-schemas-assessment.md` | Whether to use Conversation Schemas instead of participant data (verdict: not yet) |
+| `data-tables/branch-context.conversation-schema.json` | Draft Conversation Schema, ready for when native Scripter / Analytics support lands |
 | `architect/Branch-Inbound-Main.i3InboundFlow` | **Portal import file** – Architect → Inbound Call flow → Save ▾ → Import |
 | `architect/Branch-Inbound-Main.flow.json` | The same flow decoded, for review / diff |
 | `architect/Branch-Inbound-Main.yaml` | Archy definition of the same flow (CLI / CI route: `archy publish`) |

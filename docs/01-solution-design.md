@@ -31,6 +31,8 @@ Teams Auto Attendant "Perth Branch".
 4. **Agents get context.** Branch name/code and the dialed DID are attached as
    participant data so they appear in the interaction, the script, and
    reporting (Performance → Interactions can filter on attributes).
+   Conversation Schemas were assessed and deferred – see
+   `docs/05-conversation-schemas-assessment.md`.
 
 ## 3. Components
 

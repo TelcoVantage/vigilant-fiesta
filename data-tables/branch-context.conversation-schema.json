@@ -1,0 +1,13 @@
+{
+  "_comment": "Draft Conversation Schema for branch context. Field names mirror the participant data keys set by the Initialise task so a later switch is a rename-free change. Create via Admin > Custom Data Management > Conversation Schemas (or the Conversation Schema Management API) only when native Scripter/Analytics support is available or an org standard requires it.",
+  "name": "BranchContext",
+  "description": "Which branch DID the customer dialed and what the IVR did with it",
+  "properties": {
+    "branchCode":  { "type": "string",  "title": "Branch code",  "description": "Short code from BranchDirectory, e.g. PER" },
+    "branchName":  { "type": "string",  "title": "Branch name",  "description": "e.g. Perth" },
+    "branchState": { "type": "string",  "title": "State",        "description": "e.g. WA" },
+    "dialedDid":   { "type": "string",  "title": "Dialed DID",   "description": "E.164 number the customer dialed" },
+    "branchFound": { "type": "boolean", "title": "Branch found", "description": "false when the DID was not in BranchDirectory" },
+    "teamsTransferFailed": { "type": "boolean", "title": "Teams transfer failed", "description": "true when option 3 could not reach the branch and fell back to ROS" }
+  }
+}
