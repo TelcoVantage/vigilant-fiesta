@@ -39,7 +39,7 @@ OUT_JSON = REPO_ROOT / "architect" / "Branch-Inbound-Main.flow.json"
 
 FLOW_NAME = "Branch Inbound Main"
 FLOW_DESC = ("Dynamic branch IVR: data table lookup on the dialed DID, common 3-option menu, "
-             "option 3 returns the call to the branch's Teams Auto Attendant.")
+             "option 3 transfers to the branch's Teams Auto Attendant number.")
 LANG = "en-AU"
 QUEUE_ROS = "ROS"
 QUEUE_CB = "CB"
@@ -220,7 +220,7 @@ class Flow:
         return self._tracking - 1
 
     # variables -------------------------------------------------------------
-    def var(self, name, type_, initial=None, description=""):
+    def var(self, name, type_, initial=None):
         v = {"name": name, "type": type_, "id": uid("var:" + name)}
         init = emp_value(type_) if initial is None else lit_value(type_, initial)
         self.variables.append({
@@ -297,7 +297,7 @@ class Flow:
         a["_children"] = failure
         return a
 
-    def transfer_to_number(self, name, key, number: Node, fail_tts, failure: list):
+    def transfer_to_number(self, name, key, number: Node, pre_audio: dict, fail_tts, failure: list):
         failure = self.chain(failure)
         path = {"label": "Failure", "outputId": "__FAILURE__"}
         if failure:
@@ -305,7 +305,7 @@ class Flow:
         a = self.action(
             "TransferExternalAction", name, key, externalNumber=expr_value(number),
             releaseLinkTransfer=lit_value("bln", "false"), connTimeout=emp_value("dur"),
-            errorBindings=self.error_bindings(), preTransferAudio=audio_empty(),
+            errorBindings=self.error_bindings(), preTransferAudio=pre_audio,
             failureTransferAudio=audio_tts(fail_tts), paths=[path])
         a["_children"] = failure
         return a
@@ -389,74 +389,41 @@ def default_settings() -> dict:
 def build(ids: dict) -> dict:
     f = Flow(ids)
 
-    # ---- variables ---------------------------------------------------------
-    dialed = f.var("Flow.DialedNumber", "str", description="Normalised E.164 number the caller dialed (data table key)")
-    found = f.var("Flow.BranchFound", "bln", "false", "true when the dialed DID exists in BranchDirectory")
+    # ---- variables (not-found keeps these defaults: generic greeting, no Teams number) ----
     code = f.var("Flow.BranchCode", "str")
-    bname = f.var("Flow.BranchName", "str", "our bank", "Spoken in prompts - generic when the DID is not in the table")
-    state = f.var("Flow.BranchState", "str")
-    teams = f.var("Flow.TeamsDID", "str", description="E.164 Teams Auto Attendant number dialed on option 3")
-    enabled = f.var("Flow.BranchTransferEnabled", "bln", "false")
+    bname = f.var("Flow.BranchName", "str", "our bank")
+    teams = f.var("Flow.TeamsDID", "str")
     called_orig = Flow.sysvar("Call.CalledAddressOriginal", "__CALL_DNIS_ORIGINAL__", "str")
 
-    # ---- Task: Initialise --------------------------------------------------
-    normalise = f.update_data("Normalise dialed number", "normalise", [
-        (dialed, expr_value(Fn("Replace", "str", Ref(called_orig), S("tel:"), S("")))),
-        (dialed, expr_value(Fn("If", "str",
-                               Eq(Fn("Left", "str", Ref(dialed), I(1)), S("0")),
-                               Cat(S("+61"), Fn("Substring", "str", Ref(dialed), I(1),
-                                                Op("-", "int", Fn("Length", "int", Ref(dialed)), I(1)))),
-                               Ref(dialed)))),
-    ])
-    generic = [(found, expr_value(B(False))), (bname, expr_value(S("our bank"))), (enabled, expr_value(B(False)))]
+    # ---- Task: Initialise  (lookup -> participant data -> menu) ----------
     lookup = f.data_table_lookup(
-        "Lookup BranchDirectory", "lookup", Ref(dialed),
-        outputs=[("BranchCode", code), ("BranchName", bname), ("State", state), ("TeamsDID", teams),
-                 ("BranchTransferEnabled", enabled)],
-        found=[f.update_data("Branch found", "found", [(found, expr_value(B(True)))])],
-        not_found=[f.update_data("Branch not found - generic values", "notfound", generic)],
-        failure=[f.update_data("Lookup failed - generic values", "lookupfail", generic)])
-    attach = f.set_participant_data("Attach branch context for agents and reporting", "setpd", [
-        ("BranchName", expr_value(Ref(bname))), ("BranchCode", expr_value(Ref(code))),
-        ("BranchState", expr_value(Ref(state))), ("DialedDID", expr_value(Ref(dialed))),
-        ("BranchFound", expr_value(Fn("ToString", "str", Ref(found)))),
-    ])
+        "Lookup BranchDirectory", "lookup",
+        Fn("Replace", "str", Ref(called_orig), S("tel:"), S("")),
+        outputs=[("BranchCode", code), ("BranchName", bname), ("TeamsDID", teams)],
+        found=[], not_found=[], failure=[])
+    attach = f.set_participant_data("Set branch participant data", "setpd", [
+        ("BranchName", expr_value(Ref(bname))), ("BranchCode", expr_value(Ref(code)))])
     goto_menu = f.jump_to_menu("Go to Main Menu", "gotomenu", uid("menu:main"))
-    init_task = f.task("Initialise", "init", [normalise, lookup, attach, goto_menu])
+    init_task = f.task("Initialise", "init", [lookup, attach, goto_menu])
 
-    # ---- Task: Transfer to Branch -----------------------------------------
-    def ros_fallback(key, pre_tts):
-        return f.transfer_to_acd(
-            "Route to " + QUEUE_ROS, key, QUEUE_ROS, pre_tts,
-            "We are sorry, we are unable to connect you right now. Please try again later.",
-            failure=[f.disconnect("Disconnect - no route available", key + ".disc")])
-
-    yes_branch = [
-        f.play_audio("Announce branch transfer", "announce", audio_expr(
-            Fn("ToAudioTTS", "aud", Cat(Cat(S("Transferring you to the "), Ref(bname)), S(" branch now. Please hold."))))),
-        f.transfer_to_number(
-            "Transfer to branch Teams DID", "teams", Ref(teams),
-            "We are sorry, we could not connect you to the branch.",
-            failure=[
-                f.set_participant_data("Flag Teams transfer failure", "flagfail",
-                                       [("TeamsTransferFailed", expr_value(S("true")))]),
-                ros_fallback("teamsfail.ros", "Please hold while we connect you to our team."),
-            ]),
-    ]
-    no_branch = [
-        f.play_audio("Branch unavailable", "unavail", audio_tts(
-            "The branch is not available right now. Please hold while we connect you to our team.")),
-        ros_fallback("unavail.ros", None),
-    ]
-    cond = And(And(Ref(found), Ref(enabled)),
-               Ne(Fn("If", "str", Fn("IsSet", "bln", Ref(teams)), Ref(teams), S("")), S("")))
+    # ---- Task: Transfer to Branch  (decision -> Teams, else ROS) ----------
+    fail_tts = "We are sorry, we are unable to connect you right now. Please try again later."
+    has_teams = Ne(Fn("If", "str", Fn("IsSet", "bln", Ref(teams)), Ref(teams), S("")), S(""))
+    yes_branch = [f.transfer_to_number(
+        "Transfer to branch Teams DID", "teams", Ref(teams),
+        pre_audio=audio_expr(Fn("ToAudioTTS", "aud", Cat(Cat(S("Transferring you to the "), Ref(bname)), S(" branch now.")))),
+        fail_tts="We are sorry, we could not connect you to the branch.",
+        failure=[f.transfer_to_acd("Fallback to " + QUEUE_ROS, "teamsfail.ros", QUEUE_ROS,
+                                   "Please hold while we connect you to our team.", fail_tts, failure=[])])]
+    no_branch = [f.transfer_to_acd(
+        "Branch unavailable - route to " + QUEUE_ROS, "unavail.ros", QUEUE_ROS,
+        "The branch is not available right now. Please hold while we connect you to our team.", fail_tts, failure=[])]
     branch_task = f.task("Transfer to Branch", "branch",
-                         [f.decision("Branch known and transfer enabled?", "decide", cond, yes_branch, no_branch)])
+                         [f.decision("Branch has a Teams number?", "decide", has_teams, yes_branch, no_branch)])
 
     # ---- Menu --------------------------------------------------------------
     greeting = audio_expr(Fn("ToAudioTTS", "aud", Cat(Cat(S("Thank you for calling "), Ref(bname)), S(
         ". For R O S, press 1. For Country Banking, press 2. To speak to the branch, press 3."))))
-    fail_tts = "We are sorry, we are unable to connect you right now. Please try again later."
     main_menu = f.menu("Main Menu", "main", greeting, [
         (1, QUEUE_ROS, "ros", f.transfer_to_acd("Transfer to " + QUEUE_ROS, "menu.ros", QUEUE_ROS,
                                                  "Please hold while we connect you.", fail_tts, failure=[])),

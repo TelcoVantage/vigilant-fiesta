@@ -38,7 +38,7 @@ DATATABLE_NAME = "BranchDirectory"
 CALLROUTE_NAME = "Branch Inbound"
 FLOW_NAME = "Branch Inbound Main"
 
-BOOL_COLUMNS = {"BranchTransferEnabled"}
+BOOL_COLUMNS: set[str] = set()
 
 
 # ----------------------------------------------------------------------------

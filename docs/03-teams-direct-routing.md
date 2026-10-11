@@ -49,7 +49,7 @@ Each branch needs:
    `ce933385-9390-45d1-9512-c8d228074e07` = Auto Attendant).
 2. **Teams Phone Resource Account licence** (assign in M365 admin centre or
    via Graph – the script prints the UPNs that still need one).
-3. **Direct Routing phone number** = `TeamsDID` from the CSV.
+3. **Direct Routing phone number** = `TeamsDID` from the CSV (rows with a blank `TeamsDID` are skipped).
 4. **Auto Attendant** `AA – <BranchName> Branch` with a default call flow that
    greets and routes to the branch's Call Queue (or a person / shared voicemail –
    business decision), associated to the resource account.

@@ -39,9 +39,10 @@ Option A – script (recommended, idempotent, re-run after every CSV change):
 python scripts/genesys/provision.py datatable
 ```
 
-Creates `BranchDirectory` if missing using `data-tables/branch-directory.schema.json`,
-then upserts every CSV row (insert new keys, update changed rows, optionally
-`--delete-missing` to remove rows no longer in the CSV).
+Creates `BranchDirectory` if missing using `data-tables/branch-directory.schema.json`
+(4 columns: DID key, BranchCode, BranchName, TeamsDID), then upserts every CSV
+row (insert new keys, update changed rows, optionally `--delete-missing` to
+remove rows no longer in the CSV).
 
 Option B – UI: Admin → Architect → Data Tables → Add. Create the columns in
 §4 of the solution design (key column = `DID`, type String), then **Import**
@@ -77,7 +78,7 @@ Teams vs PSTN.
    `architect/Branch-Inbound-Main.i3InboundFlow` → Import.
    Importing replaces the flow's whole configuration.
 4. If you skipped step 1, Architect flags the queue pickers (ROS / CB, four
-   places) and the Data Table Lookup: re-select `ROS`, `CB` and
+   Transfer to ACD actions) and the Data Table Lookup: re-select `ROS`, `CB` and
    `BranchDirectory` by name.
 5. **Save**, then **Publish**.
 
@@ -95,8 +96,8 @@ archy publish  --file architect/Branch-Inbound-Main.yaml \
 
 Then open Admin → Architect → `Branch Inbound Main` and check:
 
-1. Data Table Lookup action references `BranchDirectory` and all 6 output
-   columns are mapped.
+1. Data Table Lookup action references `BranchDirectory` and the 3 output
+   columns (BranchCode, BranchName, TeamsDID) are mapped.
 2. Main Menu → *Settings*: default menu choice = Press 1 (ROS), repeat
    count 3, timeout 6 s (already set in the `.i3InboundFlow`; set in the UI
    if you published via Archy and it did not carry over).
@@ -128,5 +129,5 @@ select the flow, add each DID under *Inbound Numbers*.
 ## Step 7 – Smoke test
 
 See `docs/04-testing-and-operations.md` §1. Minimum: call one branch DID, press
-1, 2, 3; call a DID that is *not* in the table; set one row's
-`BranchTransferEnabled=false` and press 3.
+1, 2, 3; call a DID that is *not* in the table; blank one row's `TeamsDID`
+and press 3.

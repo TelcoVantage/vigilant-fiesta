@@ -1,9 +1,9 @@
 {
   "defaultLanguage": "en-AU",
-  "description": "Dynamic branch IVR: data table lookup on the dialed DID, common 3-option menu, option 3 returns the call to the branch's Teams Auto Attendant.",
+  "description": "Dynamic branch IVR: data table lookup on the dialed DID, common 3-option menu, option 3 transfers to the branch's Teams Auto Attendant number.",
   "initialSequence": "7b1b365c-b6a9-55d2-962f-0056f886c1b9",
   "name": "Branch Inbound Main",
-  "nextTrackingNumber": 32,
+  "nextTrackingNumber": 23,
   "uiMetaData": {
     "bridgeServerActions": [],
     "screenPops": []
@@ -20,12 +20,12 @@
           {
             "actionName": "Transfer to ACD",
             "id": "6a2faab1-5f94-5361-84a5-268dda50dce2",
-            "name": "Route to ROS"
+            "name": "Fallback to ROS"
           },
           {
             "actionName": "Transfer to ACD",
             "id": "b46ff962-40fc-5c95-a9d4-d282a5997047",
-            "name": "Route to ROS"
+            "name": "Branch unavailable - route to ROS"
           },
           {
             "actionName": "Transfer to ACD",
@@ -677,8 +677,8 @@
   },
   "flowSequenceItemList": [
     {
-      "startAction": "6cdf5f03-1cca-5eff-a808-d362d93142b6",
-      "trackingId": 17,
+      "startAction": "829313e0-6353-5b1f-8870-1c09435c8be4",
+      "trackingId": 13,
       "id": "7b1b365c-b6a9-55d2-962f-0056f886c1b9",
       "name": "Initialise",
       "uiMetaData": {
@@ -694,265 +694,6 @@
       "actionList": [
         {
           "trackingId": 10,
-          "id": "6cdf5f03-1cca-5eff-a808-d362d93142b6",
-          "name": "Normalise dialed number",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "UpdateVariableAction",
-          "variables": [
-            {
-              "expression": {
-                "config": {
-                  "Replace": {
-                    "pos": 1,
-                    "operands": [
-                      {
-                        "sysref": {
-                          "pos": 9,
-                          "text": "Call.CalledAddressOriginal",
-                          "type": "str",
-                          "val": "__CALL_DNIS_ORIGINAL__"
-                        }
-                      },
-                      {
-                        "lit": {
-                          "pos": 37,
-                          "text": "tel:",
-                          "type": "str"
-                        }
-                      },
-                      {
-                        "lit": {
-                          "pos": 45,
-                          "text": "",
-                          "type": "str"
-                        }
-                      }
-                    ],
-                    "type": "str",
-                    "text": "Replace(Call.CalledAddressOriginal, \"tel:\", \"\")"
-                  }
-                },
-                "text": "Replace(Call.CalledAddressOriginal, \"tel:\", \"\")",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "__CALL_DNIS_ORIGINAL__",
-                      "type": "str",
-                      "isSysRef": true,
-                      "name": "Call.CalledAddressOriginal"
-                    }
-                  ]
-                },
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.DialedNumber",
-                    "type": "str",
-                    "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
-                  }
-                },
-                "text": "Flow.DialedNumber",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
-                      "type": "str",
-                      "isSysRef": false,
-                      "name": "Flow.DialedNumber"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            },
-            {
-              "expression": {
-                "config": {
-                  "If": {
-                    "pos": 1,
-                    "operands": [
-                      {
-                        "==": {
-                          "pos": 31,
-                          "operands": [
-                            {
-                              "Left": {
-                                "pos": 4,
-                                "operands": [
-                                  {
-                                    "ref": {
-                                      "pos": 9,
-                                      "text": "Flow.DialedNumber",
-                                      "type": "str",
-                                      "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
-                                    }
-                                  },
-                                  {
-                                    "lit": {
-                                      "pos": 28,
-                                      "text": "1",
-                                      "type": "int"
-                                    }
-                                  }
-                                ],
-                                "type": "str"
-                              }
-                            },
-                            {
-                              "lit": {
-                                "pos": 34,
-                                "text": "0",
-                                "type": "str"
-                              }
-                            }
-                          ],
-                          "type": "bln"
-                        }
-                      },
-                      {
-                        "+": {
-                          "pos": 45,
-                          "operands": [
-                            {
-                              "lit": {
-                                "pos": 39,
-                                "text": "+61",
-                                "type": "str"
-                              }
-                            },
-                            {
-                              "Substring": {
-                                "pos": 47,
-                                "operands": [
-                                  {
-                                    "ref": {
-                                      "pos": 57,
-                                      "text": "Flow.DialedNumber",
-                                      "type": "str",
-                                      "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
-                                    }
-                                  },
-                                  {
-                                    "lit": {
-                                      "pos": 76,
-                                      "text": "1",
-                                      "type": "int"
-                                    }
-                                  },
-                                  {
-                                    "-": {
-                                      "pos": 105,
-                                      "operands": [
-                                        {
-                                          "Length": {
-                                            "pos": 79,
-                                            "operands": [
-                                              {
-                                                "ref": {
-                                                  "pos": 86,
-                                                  "text": "Flow.DialedNumber",
-                                                  "type": "str",
-                                                  "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
-                                                }
-                                              }
-                                            ],
-                                            "type": "int"
-                                          }
-                                        },
-                                        {
-                                          "lit": {
-                                            "pos": 107,
-                                            "text": "1",
-                                            "type": "int"
-                                          }
-                                        }
-                                      ],
-                                      "type": "int"
-                                    }
-                                  }
-                                ],
-                                "type": "str"
-                              }
-                            }
-                          ],
-                          "type": "str"
-                        }
-                      },
-                      {
-                        "ref": {
-                          "pos": 111,
-                          "text": "Flow.DialedNumber",
-                          "type": "str",
-                          "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
-                        }
-                      }
-                    ],
-                    "type": "str",
-                    "text": "If(Left(Flow.DialedNumber, 1) == \"0\", \"+61\" + Substring(Flow.DialedNumber, 1, Length(Flow.DialedNumber) - 1), Flow.DialedNumber)"
-                  }
-                },
-                "text": "If(Left(Flow.DialedNumber, 1) == \"0\", \"+61\" + Substring(Flow.DialedNumber, 1, Length(Flow.DialedNumber) - 1), Flow.DialedNumber)",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
-                      "type": "str",
-                      "isSysRef": false,
-                      "name": "Flow.DialedNumber"
-                    }
-                  ]
-                },
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.DialedNumber",
-                    "type": "str",
-                    "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
-                  }
-                },
-                "text": "Flow.DialedNumber",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
-                      "type": "str",
-                      "isSysRef": false,
-                      "name": "Flow.DialedNumber"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            }
-          ],
-          "nextAction": "829313e0-6353-5b1f-8870-1c09435c8be4"
-        },
-        {
-          "trackingId": 14,
           "id": "829313e0-6353-5b1f-8870-1c09435c8be4",
           "name": "Lookup BranchDirectory",
           "uiMetaData": {
@@ -963,14 +704,37 @@
           "datatableName": "BranchDirectory",
           "lookupKeyValue": {
             "config": {
-              "ref": {
+              "Replace": {
                 "pos": 1,
-                "text": "Flow.DialedNumber",
+                "operands": [
+                  {
+                    "sysref": {
+                      "pos": 9,
+                      "text": "Call.CalledAddressOriginal",
+                      "type": "str",
+                      "val": "__CALL_DNIS_ORIGINAL__"
+                    }
+                  },
+                  {
+                    "lit": {
+                      "pos": 37,
+                      "text": "tel:",
+                      "type": "str"
+                    }
+                  },
+                  {
+                    "lit": {
+                      "pos": 45,
+                      "text": "",
+                      "type": "str"
+                    }
+                  }
+                ],
                 "type": "str",
-                "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+                "text": "Replace(Call.CalledAddressOriginal, \"tel:\", \"\")"
               }
             },
-            "text": "Flow.DialedNumber",
+            "text": "Replace(Call.CalledAddressOriginal, \"tel:\", \"\")",
             "type": "str",
             "uiMetaData": {
               "mode": 0
@@ -978,10 +742,10 @@
             "metaData": {
               "references": [
                 {
-                  "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
+                  "id": "__CALL_DNIS_ORIGINAL__",
                   "type": "str",
-                  "isSysRef": false,
-                  "name": "Flow.DialedNumber"
+                  "isSysRef": true,
+                  "name": "Call.CalledAddressOriginal"
                 }
               ]
             },
@@ -1048,35 +812,6 @@
               }
             },
             {
-              "name": "State",
-              "value": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchState",
-                    "type": "str",
-                    "val": "f910edf8-3386-5e89-b55e-934fa44069a8"
-                  }
-                },
-                "text": "Flow.BranchState",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "f910edf8-3386-5e89-b55e-934fa44069a8",
-                      "type": "str",
-                      "isSysRef": false,
-                      "name": "Flow.BranchState"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            },
-            {
               "name": "TeamsDID",
               "value": {
                 "config": {
@@ -1099,35 +834,6 @@
                       "type": "str",
                       "isSysRef": false,
                       "name": "Flow.TeamsDID"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            },
-            {
-              "name": "BranchTransferEnabled",
-              "value": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchTransferEnabled",
-                    "type": "bln",
-                    "val": "9f85943d-b4c5-5eb5-8337-fcddc270aa78"
-                  }
-                },
-                "text": "Flow.BranchTransferEnabled",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
-                      "type": "bln",
-                      "isSysRef": false,
-                      "name": "Flow.BranchTransferEnabled"
                     }
                   ]
                 },
@@ -1178,367 +884,23 @@
           "paths": [
             {
               "label": "Found",
-              "outputId": "__FOUND__",
-              "nextActionId": "cfca2372-dcb2-55ab-8666-b6cec175a972"
+              "outputId": "__FOUND__"
             },
             {
               "label": "Not Found",
-              "outputId": "__NOT_FOUND__",
-              "nextActionId": "ad09b566-1c2f-53df-9239-7b1648a81082"
+              "outputId": "__NOT_FOUND__"
             },
             {
               "label": "Failure",
-              "outputId": "__FAILURE__",
-              "nextActionId": "6a101beb-f011-5d40-9a7d-6f6fdb25363d"
+              "outputId": "__FAILURE__"
             }
           ],
           "nextAction": "fdb6bcfd-698e-5b63-82e7-8852c45f09f9"
         },
         {
           "trackingId": 11,
-          "id": "cfca2372-dcb2-55ab-8666-b6cec175a972",
-          "name": "Branch found",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "UpdateVariableAction",
-          "variables": [
-            {
-              "expression": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "true",
-                    "type": "bln"
-                  }
-                },
-                "text": "true",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {},
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchFound",
-                    "type": "bln",
-                    "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
-                  }
-                },
-                "text": "Flow.BranchFound",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
-                      "type": "bln",
-                      "isSysRef": false,
-                      "name": "Flow.BranchFound"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            }
-          ]
-        },
-        {
-          "trackingId": 12,
-          "id": "ad09b566-1c2f-53df-9239-7b1648a81082",
-          "name": "Branch not found - generic values",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "UpdateVariableAction",
-          "variables": [
-            {
-              "expression": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "false",
-                    "type": "bln"
-                  }
-                },
-                "text": "false",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {},
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchFound",
-                    "type": "bln",
-                    "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
-                  }
-                },
-                "text": "Flow.BranchFound",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
-                      "type": "bln",
-                      "isSysRef": false,
-                      "name": "Flow.BranchFound"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            },
-            {
-              "expression": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "our bank",
-                    "type": "str"
-                  }
-                },
-                "text": "\"our bank\"",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {},
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchName",
-                    "type": "str",
-                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
-                  }
-                },
-                "text": "Flow.BranchName",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
-                      "type": "str",
-                      "isSysRef": false,
-                      "name": "Flow.BranchName"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            },
-            {
-              "expression": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "false",
-                    "type": "bln"
-                  }
-                },
-                "text": "false",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {},
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchTransferEnabled",
-                    "type": "bln",
-                    "val": "9f85943d-b4c5-5eb5-8337-fcddc270aa78"
-                  }
-                },
-                "text": "Flow.BranchTransferEnabled",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
-                      "type": "bln",
-                      "isSysRef": false,
-                      "name": "Flow.BranchTransferEnabled"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            }
-          ]
-        },
-        {
-          "trackingId": 13,
-          "id": "6a101beb-f011-5d40-9a7d-6f6fdb25363d",
-          "name": "Lookup failed - generic values",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "UpdateVariableAction",
-          "variables": [
-            {
-              "expression": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "false",
-                    "type": "bln"
-                  }
-                },
-                "text": "false",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {},
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchFound",
-                    "type": "bln",
-                    "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
-                  }
-                },
-                "text": "Flow.BranchFound",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
-                      "type": "bln",
-                      "isSysRef": false,
-                      "name": "Flow.BranchFound"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            },
-            {
-              "expression": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "our bank",
-                    "type": "str"
-                  }
-                },
-                "text": "\"our bank\"",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {},
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchName",
-                    "type": "str",
-                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
-                  }
-                },
-                "text": "Flow.BranchName",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
-                      "type": "str",
-                      "isSysRef": false,
-                      "name": "Flow.BranchName"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            },
-            {
-              "expression": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "false",
-                    "type": "bln"
-                  }
-                },
-                "text": "false",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {},
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchTransferEnabled",
-                    "type": "bln",
-                    "val": "9f85943d-b4c5-5eb5-8337-fcddc270aa78"
-                  }
-                },
-                "text": "Flow.BranchTransferEnabled",
-                "type": "bln",
-                "uiMetaData": {
-                  "mode": 2
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
-                      "type": "bln",
-                      "isSysRef": false,
-                      "name": "Flow.BranchTransferEnabled"
-                    }
-                  ]
-                },
-                "version": 2
-              }
-            }
-          ]
-        },
-        {
-          "trackingId": 15,
           "id": "fdb6bcfd-698e-5b63-82e7-8852c45f09f9",
-          "name": "Attach branch context for agents and reporting",
+          "name": "Set branch participant data",
           "uiMetaData": {
             "collapsed": false
           },
@@ -1631,153 +993,12 @@
                 "metaData": {},
                 "version": 2
               }
-            },
-            {
-              "expression": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.BranchState",
-                    "type": "str",
-                    "val": "f910edf8-3386-5e89-b55e-934fa44069a8"
-                  }
-                },
-                "text": "Flow.BranchState",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "f910edf8-3386-5e89-b55e-934fa44069a8",
-                      "type": "str",
-                      "isSysRef": false,
-                      "name": "Flow.BranchState"
-                    }
-                  ]
-                },
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "BranchState",
-                    "type": "str"
-                  }
-                },
-                "text": "BranchState",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 1
-                },
-                "metaData": {},
-                "version": 2
-              }
-            },
-            {
-              "expression": {
-                "config": {
-                  "ref": {
-                    "pos": 1,
-                    "text": "Flow.DialedNumber",
-                    "type": "str",
-                    "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
-                  }
-                },
-                "text": "Flow.DialedNumber",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
-                      "type": "str",
-                      "isSysRef": false,
-                      "name": "Flow.DialedNumber"
-                    }
-                  ]
-                },
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "DialedDID",
-                    "type": "str"
-                  }
-                },
-                "text": "DialedDID",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 1
-                },
-                "metaData": {},
-                "version": 2
-              }
-            },
-            {
-              "expression": {
-                "config": {
-                  "ToString": {
-                    "pos": 1,
-                    "operands": [
-                      {
-                        "ref": {
-                          "pos": 10,
-                          "text": "Flow.BranchFound",
-                          "type": "bln",
-                          "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
-                        }
-                      }
-                    ],
-                    "type": "str",
-                    "text": "ToString(Flow.BranchFound)"
-                  }
-                },
-                "text": "ToString(Flow.BranchFound)",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {
-                  "references": [
-                    {
-                      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
-                      "type": "bln",
-                      "isSysRef": false,
-                      "name": "Flow.BranchFound"
-                    }
-                  ]
-                },
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "BranchFound",
-                    "type": "str"
-                  }
-                },
-                "text": "BranchFound",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 1
-                },
-                "metaData": {},
-                "version": 2
-              }
             }
           ],
           "nextAction": "819411bc-a0e5-58a1-88f1-a1da5d5255cf"
         },
         {
-          "trackingId": 16,
+          "trackingId": 12,
           "id": "819411bc-a0e5-58a1-88f1-a1da5d5255cf",
           "name": "Go to Main Menu",
           "uiMetaData": {
@@ -1790,7 +1011,7 @@
       "variables": []
     },
     {
-      "trackingId": 31,
+      "trackingId": 22,
       "id": "03c07490-bff0-5646-8fa3-202f2625b560",
       "name": "Main Menu",
       "uiMetaData": {
@@ -1823,7 +1044,7 @@
           "id": "c7580c71-dff6-5184-9698-f80b55f8d1f9",
           "name": "ROS",
           "action": {
-            "trackingId": 28,
+            "trackingId": 19,
             "id": "0aa6c322-a90f-5dd1-a30a-9ca6355d8dc1",
             "name": "Transfer to ROS",
             "uiMetaData": {
@@ -2134,7 +1355,7 @@
           "id": "527390d1-cd93-5ad7-b288-fb6a13511dc3",
           "name": "Country Banking",
           "action": {
-            "trackingId": 29,
+            "trackingId": 20,
             "id": "a7bb333b-a543-5bd2-88e5-55a026f2b55e",
             "name": "Transfer to CB",
             "uiMetaData": {
@@ -2445,7 +1666,7 @@
           "id": "757b6707-f139-5454-9ec4-072041e2916b",
           "name": "Speak to the Branch",
           "action": {
-            "trackingId": 30,
+            "trackingId": 21,
             "id": "68582bc1-93e3-5480-a073-5427e296a7f8",
             "name": "Speak to the Branch",
             "uiMetaData": {
@@ -2673,7 +1894,7 @@
     },
     {
       "startAction": "40d82bc1-f1e2-5d5c-8167-7863e8d9c011",
-      "trackingId": 27,
+      "trackingId": 18,
       "id": "7a3dc907-48d3-5760-aea9-069d8442a545",
       "name": "Transfer to Branch",
       "uiMetaData": {
@@ -2688,120 +1909,76 @@
       ],
       "actionList": [
         {
-          "trackingId": 26,
+          "trackingId": 17,
           "id": "40d82bc1-f1e2-5d5c-8167-7863e8d9c011",
-          "name": "Branch known and transfer enabled?",
+          "name": "Branch has a Teams number?",
           "uiMetaData": {
             "collapsed": false
           },
           "__type": "DecisionAction",
           "expression": {
             "config": {
-              "and": {
-                "pos": 49,
+              "!=": {
+                "pos": 45,
                 "operands": [
                   {
-                    "and": {
-                      "pos": 18,
+                    "If": {
+                      "pos": 1,
                       "operands": [
                         {
-                          "ref": {
-                            "pos": 1,
-                            "text": "Flow.BranchFound",
-                            "type": "bln",
-                            "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
-                          }
-                        },
-                        {
-                          "ref": {
-                            "pos": 22,
-                            "text": "Flow.BranchTransferEnabled",
-                            "type": "bln",
-                            "val": "9f85943d-b4c5-5eb5-8337-fcddc270aa78"
-                          }
-                        }
-                      ],
-                      "type": "bln"
-                    }
-                  },
-                  {
-                    "!=": {
-                      "pos": 97,
-                      "operands": [
-                        {
-                          "If": {
-                            "pos": 53,
+                          "IsSet": {
+                            "pos": 4,
                             "operands": [
                               {
-                                "IsSet": {
-                                  "pos": 56,
-                                  "operands": [
-                                    {
-                                      "ref": {
-                                        "pos": 62,
-                                        "text": "Flow.TeamsDID",
-                                        "type": "str",
-                                        "val": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6"
-                                      }
-                                    }
-                                  ],
-                                  "type": "bln"
-                                }
-                              },
-                              {
                                 "ref": {
-                                  "pos": 78,
+                                  "pos": 10,
                                   "text": "Flow.TeamsDID",
                                   "type": "str",
                                   "val": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6"
                                 }
-                              },
-                              {
-                                "lit": {
-                                  "pos": 93,
-                                  "text": "",
-                                  "type": "str"
-                                }
                               }
                             ],
-                            "type": "str"
+                            "type": "bln"
+                          }
+                        },
+                        {
+                          "ref": {
+                            "pos": 26,
+                            "text": "Flow.TeamsDID",
+                            "type": "str",
+                            "val": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6"
                           }
                         },
                         {
                           "lit": {
-                            "pos": 100,
+                            "pos": 41,
                             "text": "",
                             "type": "str"
                           }
                         }
                       ],
-                      "type": "bln"
+                      "type": "str"
+                    }
+                  },
+                  {
+                    "lit": {
+                      "pos": 48,
+                      "text": "",
+                      "type": "str"
                     }
                   }
                 ],
                 "type": "bln",
-                "text": "Flow.BranchFound and Flow.BranchTransferEnabled and If(IsSet(Flow.TeamsDID), Flow.TeamsDID, \"\") != \"\""
+                "text": "If(IsSet(Flow.TeamsDID), Flow.TeamsDID, \"\") != \"\""
               }
             },
-            "text": "Flow.BranchFound and Flow.BranchTransferEnabled and If(IsSet(Flow.TeamsDID), Flow.TeamsDID, \"\") != \"\"",
+            "text": "If(IsSet(Flow.TeamsDID), Flow.TeamsDID, \"\") != \"\"",
             "type": "bln",
             "uiMetaData": {
               "mode": 0
             },
             "metaData": {
               "references": [
-                {
-                  "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
-                  "type": "bln",
-                  "isSysRef": false,
-                  "name": "Flow.BranchFound"
-                },
-                {
-                  "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
-                  "type": "bln",
-                  "isSysRef": false,
-                  "name": "Flow.BranchTransferEnabled"
-                },
                 {
                   "id": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6",
                   "type": "str",
@@ -2816,127 +1993,17 @@
             {
               "label": "Yes",
               "outputId": "__YES__",
-              "nextActionId": "45e61071-e865-51d5-9077-5f6c56b44764"
+              "nextActionId": "5a677bbd-1bcb-5086-a24b-e1cd40b4d5bd"
             },
             {
               "label": "No",
               "outputId": "__NO__",
-              "nextActionId": "3bafd11b-b7d3-5efe-ae27-e4b53b88fece"
+              "nextActionId": "b46ff962-40fc-5c95-a9d4-d282a5997047"
             }
           ]
         },
         {
-          "trackingId": 18,
-          "id": "45e61071-e865-51d5-9077-5f6c56b44764",
-          "name": "Announce branch transfer",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "PlayAudioAction",
-          "prompts": {
-            "bargeInExpression": {
-              "config": {
-                "lit": {
-                  "pos": 1,
-                  "text": "true",
-                  "type": "bln"
-                }
-              },
-              "text": "true",
-              "type": "bln",
-              "uiMetaData": {
-                "mode": 1
-              },
-              "metaData": {},
-              "version": 2
-            },
-            "flushExpression": {
-              "config": {
-                "lit": {
-                  "pos": 1,
-                  "text": "false",
-                  "type": "bln"
-                }
-              },
-              "text": "false",
-              "type": "bln",
-              "uiMetaData": {
-                "mode": 1
-              },
-              "metaData": {},
-              "version": 2
-            },
-            "defaultAudio": {
-              "config": {
-                "ToAudioTTS": {
-                  "pos": 1,
-                  "operands": [
-                    {
-                      "+": {
-                        "pos": 57,
-                        "operands": [
-                          {
-                            "+": {
-                              "pos": 39,
-                              "operands": [
-                                {
-                                  "lit": {
-                                    "pos": 12,
-                                    "text": "Transferring you to the ",
-                                    "type": "str"
-                                  }
-                                },
-                                {
-                                  "ref": {
-                                    "pos": 41,
-                                    "text": "Flow.BranchName",
-                                    "type": "str",
-                                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
-                                  }
-                                }
-                              ],
-                              "type": "str"
-                            }
-                          },
-                          {
-                            "lit": {
-                              "pos": 59,
-                              "text": " branch now. Please hold.",
-                              "type": "str"
-                            }
-                          }
-                        ],
-                        "type": "str"
-                      }
-                    }
-                  ],
-                  "type": "aud",
-                  "text": "ToAudioTTS(\"Transferring you to the \" + Flow.BranchName + \" branch now. Please hold.\")"
-                }
-              },
-              "text": "ToAudioTTS(\"Transferring you to the \" + Flow.BranchName + \" branch now. Please hold.\")",
-              "type": "aud",
-              "uiMetaData": {
-                "sequenceItems": [],
-                "customExpressionMode": true
-              },
-              "metaData": {
-                "references": [
-                  {
-                    "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
-                    "type": "str",
-                    "isSysRef": false,
-                    "name": "Flow.BranchName"
-                  }
-                ]
-              }
-            },
-            "cases": []
-          },
-          "nextAction": "5a677bbd-1bcb-5086-a24b-e1cd40b4d5bd"
-        },
-        {
-          "trackingId": 22,
+          "trackingId": 15,
           "id": "5a677bbd-1bcb-5086-a24b-e1cd40b4d5bd",
           "name": "Transfer to branch Teams DID",
           "uiMetaData": {
@@ -3076,24 +2143,68 @@
             },
             "defaultAudio": {
               "config": {
-                "emp": {
+                "ToAudioTTS": {
                   "pos": 1,
-                  "text": "",
-                  "type": "aud"
+                  "operands": [
+                    {
+                      "+": {
+                        "pos": 57,
+                        "operands": [
+                          {
+                            "+": {
+                              "pos": 39,
+                              "operands": [
+                                {
+                                  "lit": {
+                                    "pos": 12,
+                                    "text": "Transferring you to the ",
+                                    "type": "str"
+                                  }
+                                },
+                                {
+                                  "ref": {
+                                    "pos": 41,
+                                    "text": "Flow.BranchName",
+                                    "type": "str",
+                                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
+                                  }
+                                }
+                              ],
+                              "type": "str"
+                            }
+                          },
+                          {
+                            "lit": {
+                              "pos": 59,
+                              "text": " branch now.",
+                              "type": "str"
+                            }
+                          }
+                        ],
+                        "type": "str"
+                      }
+                    }
+                  ],
+                  "type": "aud",
+                  "text": "ToAudioTTS(\"Transferring you to the \" + Flow.BranchName + \" branch now.\")"
                 }
               },
-              "text": "",
+              "text": "ToAudioTTS(\"Transferring you to the \" + Flow.BranchName + \" branch now.\")",
               "type": "aud",
               "uiMetaData": {
-                "sequenceItems": [
-                  {
-                    "type": 0,
-                    "parameter": ""
-                  }
-                ],
-                "customExpressionMode": false
+                "sequenceItems": [],
+                "customExpressionMode": true
               },
-              "metaData": {}
+              "metaData": {
+                "references": [
+                  {
+                    "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
+                    "type": "str",
+                    "isSysRef": false,
+                    "name": "Flow.BranchName"
+                  }
+                ]
+              }
             },
             "cases": []
           },
@@ -3182,65 +2293,19 @@
             {
               "label": "Failure",
               "outputId": "__FAILURE__",
-              "nextActionId": "fff369d9-23ba-5c28-bd91-9c61508f1282"
+              "nextActionId": "6a2faab1-5f94-5361-84a5-268dda50dce2"
             }
           ]
         },
         {
-          "trackingId": 19,
-          "id": "fff369d9-23ba-5c28-bd91-9c61508f1282",
-          "name": "Flag Teams transfer failure",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "SetAttributesAction",
-          "variables": [
-            {
-              "expression": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "true",
-                    "type": "str"
-                  }
-                },
-                "text": "\"true\"",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 0
-                },
-                "metaData": {},
-                "version": 2
-              },
-              "variable": {
-                "config": {
-                  "lit": {
-                    "pos": 1,
-                    "text": "TeamsTransferFailed",
-                    "type": "str"
-                  }
-                },
-                "text": "TeamsTransferFailed",
-                "type": "str",
-                "uiMetaData": {
-                  "mode": 1
-                },
-                "metaData": {},
-                "version": 2
-              }
-            }
-          ],
-          "nextAction": "6a2faab1-5f94-5361-84a5-268dda50dce2"
-        },
-        {
-          "trackingId": 21,
+          "trackingId": 14,
           "id": "6a2faab1-5f94-5361-84a5-268dda50dce2",
-          "name": "Route to ROS",
+          "name": "Fallback to ROS",
           "uiMetaData": {
             "collapsed": false
           },
           "__type": "TransferPureMatchAction",
-          "useDefaultHandling": false,
+          "useDefaultHandling": true,
           "appendSkills": {
             "config": {
               "lit": {
@@ -3530,120 +2595,19 @@
           "paths": [
             {
               "label": "Failure",
-              "outputId": "__FAILURE__",
-              "nextActionId": "5a3998ab-2e60-5bc9-a205-38157ef48c26"
+              "outputId": "__FAILURE__"
             }
           ]
         },
         {
-          "trackingId": 20,
-          "id": "5a3998ab-2e60-5bc9-a205-38157ef48c26",
-          "name": "Disconnect - no route available",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "DisconnectAction"
-        },
-        {
-          "trackingId": 23,
-          "id": "3bafd11b-b7d3-5efe-ae27-e4b53b88fece",
-          "name": "Branch unavailable",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "PlayAudioAction",
-          "prompts": {
-            "bargeInExpression": {
-              "config": {
-                "lit": {
-                  "pos": 1,
-                  "text": "true",
-                  "type": "bln"
-                }
-              },
-              "text": "true",
-              "type": "bln",
-              "uiMetaData": {
-                "mode": 1
-              },
-              "metaData": {},
-              "version": 2
-            },
-            "flushExpression": {
-              "config": {
-                "lit": {
-                  "pos": 1,
-                  "text": "false",
-                  "type": "bln"
-                }
-              },
-              "text": "false",
-              "type": "bln",
-              "uiMetaData": {
-                "mode": 1
-              },
-              "metaData": {},
-              "version": 2
-            },
-            "defaultAudio": {
-              "config": {
-                "AudioPlaybackOptions": {
-                  "pos": 1,
-                  "operands": [
-                    {
-                      "ToAudioTTS": {
-                        "pos": 22,
-                        "operands": [
-                          {
-                            "lit": {
-                              "pos": 33,
-                              "text": "The branch is not available right now. Please hold while we connect you to our team.",
-                              "type": "str"
-                            }
-                          }
-                        ],
-                        "type": "aud"
-                      }
-                    },
-                    {
-                      "lit": {
-                        "pos": 122,
-                        "text": "true",
-                        "type": "bln"
-                      }
-                    }
-                  ],
-                  "type": "aud",
-                  "text": "AudioPlaybackOptions(ToAudioTTS(\"The branch is not available right now. Please hold while we connect you to our team.\"), true)"
-                }
-              },
-              "text": "AudioPlaybackOptions(ToAudioTTS(\"The branch is not available right now. Please hold while we connect you to our team.\"), true)",
-              "type": "aud",
-              "uiMetaData": {
-                "sequenceItems": [
-                  {
-                    "type": 0,
-                    "parameter": "The branch is not available right now. Please hold while we connect you to our team.",
-                    "error": ""
-                  }
-                ],
-                "customExpressionMode": false
-              },
-              "metaData": {}
-            },
-            "cases": []
-          },
-          "nextAction": "b46ff962-40fc-5c95-a9d4-d282a5997047"
-        },
-        {
-          "trackingId": 25,
+          "trackingId": 16,
           "id": "b46ff962-40fc-5c95-a9d4-d282a5997047",
-          "name": "Route to ROS",
+          "name": "Branch unavailable - route to ROS",
           "uiMetaData": {
             "collapsed": false
           },
           "__type": "TransferPureMatchAction",
-          "useDefaultHandling": false,
+          "useDefaultHandling": true,
           "appendSkills": {
             "config": {
               "lit": {
@@ -3803,19 +2767,44 @@
             },
             "defaultAudio": {
               "config": {
-                "emp": {
+                "AudioPlaybackOptions": {
                   "pos": 1,
-                  "text": "",
-                  "type": "aud"
+                  "operands": [
+                    {
+                      "ToAudioTTS": {
+                        "pos": 22,
+                        "operands": [
+                          {
+                            "lit": {
+                              "pos": 33,
+                              "text": "The branch is not available right now. Please hold while we connect you to our team.",
+                              "type": "str"
+                            }
+                          }
+                        ],
+                        "type": "aud"
+                      }
+                    },
+                    {
+                      "lit": {
+                        "pos": 122,
+                        "text": "true",
+                        "type": "bln"
+                      }
+                    }
+                  ],
+                  "type": "aud",
+                  "text": "AudioPlaybackOptions(ToAudioTTS(\"The branch is not available right now. Please hold while we connect you to our team.\"), true)"
                 }
               },
-              "text": "",
+              "text": "AudioPlaybackOptions(ToAudioTTS(\"The branch is not available right now. Please hold while we connect you to our team.\"), true)",
               "type": "aud",
               "uiMetaData": {
                 "sequenceItems": [
                   {
                     "type": 0,
-                    "parameter": ""
+                    "parameter": "The branch is not available right now. Please hold while we connect you to our team.",
+                    "error": ""
                   }
                 ],
                 "customExpressionMode": false
@@ -3908,19 +2897,9 @@
           "paths": [
             {
               "label": "Failure",
-              "outputId": "__FAILURE__",
-              "nextActionId": "3b016de2-2cb0-5069-a02a-059837155300"
+              "outputId": "__FAILURE__"
             }
           ]
-        },
-        {
-          "trackingId": 24,
-          "id": "3b016de2-2cb0-5069-a02a-059837155300",
-          "name": "Disconnect - no route available",
-          "uiMetaData": {
-            "collapsed": false
-          },
-          "__type": "DisconnectAction"
         }
       ],
       "variables": []
@@ -3948,60 +2927,6 @@
     }
   ],
   "variables": [
-    {
-      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
-      "isCollection": false,
-      "isInternal": false,
-      "isOutput": false,
-      "isInput": false,
-      "isSecure": false,
-      "version": "1.0",
-      "__type": "StringVariable",
-      "name": "Flow.DialedNumber",
-      "initialValue": {
-        "config": {
-          "emp": {
-            "pos": 1,
-            "text": "",
-            "type": "str"
-          }
-        },
-        "text": "",
-        "type": "str",
-        "uiMetaData": {
-          "mode": 3
-        },
-        "metaData": {},
-        "version": 2
-      }
-    },
-    {
-      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
-      "isCollection": false,
-      "isInternal": false,
-      "isOutput": false,
-      "isInput": false,
-      "isSecure": false,
-      "version": "1.0",
-      "__type": "BoolVariable",
-      "name": "Flow.BranchFound",
-      "initialValue": {
-        "config": {
-          "lit": {
-            "pos": 1,
-            "text": "false",
-            "type": "bln"
-          }
-        },
-        "text": "false",
-        "type": "bln",
-        "uiMetaData": {
-          "mode": 1
-        },
-        "metaData": {},
-        "version": 2
-      }
-    },
     {
       "id": "1ffd10c4-f069-5add-8897-8ffd0eeef6fa",
       "isCollection": false,
@@ -4057,33 +2982,6 @@
       }
     },
     {
-      "id": "f910edf8-3386-5e89-b55e-934fa44069a8",
-      "isCollection": false,
-      "isInternal": false,
-      "isOutput": false,
-      "isInput": false,
-      "isSecure": false,
-      "version": "1.0",
-      "__type": "StringVariable",
-      "name": "Flow.BranchState",
-      "initialValue": {
-        "config": {
-          "emp": {
-            "pos": 1,
-            "text": "",
-            "type": "str"
-          }
-        },
-        "text": "",
-        "type": "str",
-        "uiMetaData": {
-          "mode": 3
-        },
-        "metaData": {},
-        "version": 2
-      }
-    },
-    {
       "id": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6",
       "isCollection": false,
       "isInternal": false,
@@ -4105,33 +3003,6 @@
         "type": "str",
         "uiMetaData": {
           "mode": 3
-        },
-        "metaData": {},
-        "version": 2
-      }
-    },
-    {
-      "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
-      "isCollection": false,
-      "isInternal": false,
-      "isOutput": false,
-      "isInput": false,
-      "isSecure": false,
-      "version": "1.0",
-      "__type": "BoolVariable",
-      "name": "Flow.BranchTransferEnabled",
-      "initialValue": {
-        "config": {
-          "lit": {
-            "pos": 1,
-            "text": "false",
-            "type": "bln"
-          }
-        },
-        "text": "false",
-        "type": "bln",
-        "uiMetaData": {
-          "mode": 1
         },
         "metaData": {},
         "version": 2

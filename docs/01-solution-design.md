@@ -28,9 +28,9 @@ Teams Auto Attendant "Perth Branch".
 3. **Fail safe, never fail silent.** If the DID is not in the table, or the
    Teams transfer fails, the customer still lands in a human queue (ROS by
    default – confirm with the business) and the agent sees why.
-4. **Agents get context.** Branch name/code and the dialed DID are attached as
-   participant data so they appear in the interaction, the script, and
-   reporting (Performance → Interactions can filter on attributes).
+4. **Agents get context.** Branch name and code are attached as participant
+   data so they appear in the interaction, the script, and reporting
+   (Performance → Interactions can filter on attributes).
 
 ## 3. Components
 
@@ -59,54 +59,43 @@ Teams Auto Attendant "Perth Branch".
 |--------|------|-----|---------|---------|
 | `key` (DID) | string | **yes** | `+61281233650` | Number the customer dialed, as presented by the trunk, E.164 |
 | `BranchCode` | string | | `PER` | Short code for reporting / screen pop |
-| `BranchName` | string | | `Perth` | Spoken in prompts, shown to agents |
-| `State` | string | | `WA` | Optional routing / reporting dimension |
-| `TeamsDID` | string | | `+61881233650` | Number Genesys dials for option 3 |
-| `BranchTransferEnabled` | boolean | | `true` | Kill-switch per branch (e.g. branch closed, Teams outage) |
-| `Notes` | string | | | Free text for admins |
+| `BranchName` | string | | `Perth` | Spoken in the greeting, shown to agents |
+| `TeamsDID` | string | | `+61881233650` | Number Genesys dials for option 3. **Blank = option 3 goes to ROS** (per-branch kill switch) |
 
 Why key on the DID and not the branch code: the flow has exactly one fact at
 runtime – `Call.CalledAddressOriginal` – so the lookup must be by that value.
 
-## 5. Flow logic (what the YAML implements)
+## 5. Flow logic (what the `.i3InboundFlow` / YAML implements)
 
 ```
-Start ─► Task: Initialise
-          ├─ Update Data   Flow.DialedNumber = normalise(Call.CalledAddressOriginal)
-          ├─ Data Table Lookup  BranchDirectory[Flow.DialedNumber]
-          │     Found     → Flow.BranchFound=true,  Flow.BranchName/Code/State/TeamsDID/TransferEnabled
-          │     Not Found → Flow.BranchFound=false, Flow.BranchName="our bank"
-          │     Failure   → same as Not Found
-          ├─ Set Participant Data  BranchName, BranchCode, BranchState, DialedDID, BranchFound
-          └─ Jump to Menu  Main Menu
+Task: Initialise
+   Data Table Lookup  BranchDirectory[ Replace(Call.CalledAddressOriginal, "tel:", "") ]
+       Found → Flow.BranchCode, Flow.BranchName, Flow.TeamsDID
+       Not Found / Failure → nothing (variables keep defaults: BranchName="our bank", TeamsDID empty)
+   Set Participant Data  BranchName, BranchCode
+   Jump to Menu  Main Menu
 
-Menu: Main Menu  (repeat ×3 on no input / invalid; then default choice → ROS)
-   Greeting: "Thank you for calling {BranchName}." (generic if not found)
-   1 ─► Transfer to ACD  ROS   (failure → apology → disconnect)
-   2 ─► Transfer to ACD  CB    (failure → apology → disconnect)
-   3 ─► Jump to Task  Transfer to Branch
+Menu: Main Menu  (repeat ×3 on no input / invalid, 6 s timeout; default choice → ROS)
+   "Thank you for calling {BranchName}. For ROS press 1. For Country Banking press 2. To speak to the branch press 3."
+   1 ─► Transfer to ACD  ROS
+   2 ─► Transfer to ACD  CB
+   3 ─► Task  Transfer to Branch
 
 Task: Transfer to Branch
-   Decision  BranchFound AND BranchTransferEnabled AND TeamsDID not empty
-      Yes → Play "Transferring you to the {BranchName} branch"
-            Transfer to Number  Flow.TeamsDID
-              failure → Play "Sorry, we couldn't connect you to the branch"
-                        Transfer to ACD  ROS   (fallback – confirm with business)
-      No  → Play "The branch is not available right now, connecting you to our team"
-            Transfer to ACD  ROS
+   Decision  Flow.TeamsDID is set and not empty
+      Yes → Transfer to Number  Flow.TeamsDID   (pre-transfer: "Transferring you to the {BranchName} branch now.")
+              failure → Transfer to ACD  ROS
+      No  → Transfer to ACD  ROS   (pre-transfer: "The branch is not available right now…")
 ```
 
-### 5.1 Number normalisation
+Seven actions, three variables, no per-branch logic.
+
+### 5.1 Number format
 
 `Call.CalledAddressOriginal` arrives as `tel:+61281233650` on a correctly
-configured BYOC trunk. The flow strips `tel:` and, defensively, converts a
-national-format `02…` into `+612…`. **Configure the SBC/trunk to send E.164**
-so the second rule is never needed – it is a safety net, not the plan.
-
-```
-Flow.DialedNumber = Replace(Call.CalledAddressOriginal, "tel:", "")
-If Left(Flow.DialedNumber, 1) == "0" → "+61" + Substring(Flow.DialedNumber, 1)
-```
+configured BYOC trunk; the lookup key strips `tel:`. **Configure the SBC/trunk
+to send E.164** – if it sends national format (`0281233650`) either fix it on
+the SBC (preferred) or key the data table on that format.
 
 ### 5.2 Transfer to Teams – how the call leaves Genesys
 
@@ -116,33 +105,24 @@ If Left(Flow.DialedNumber, 1) == "0" → "+61" + Substring(Flow.DialedNumber, 1)
 * SBC has a dial-plan rule: "called number ∈ Teams DR number range → route to
   Teams (sip.pstnhub.microsoft.com)". The call never touches the PSTN, so no
   per-minute carrier cost, and the Teams AA receives the **customer's** CLI
-  (set trunk *Calling Address Override Method* = `Unassigned` / pass-through
-  and tick *Caller ID / ANI pass-through* on the BYOC trunk).
+  (trunk *Calling Address Override Method* = pass-through).
 * Enable **Release Link Transfer (SIP REFER)** on the BYOC trunk if the SBC
-  supports it. Genesys then drops out of the media path after the transfer and
-  the Genesys call leg ends – otherwise Genesys bridges two legs for the whole
-  branch conversation (two trunk channels, two Genesys "minutes").
+  supports it, so Genesys drops out of the media path after the transfer.
 
 Alternative: let the transfer go out to the PSTN and in again via the Teams
-calling plan / Operator Connect number. Works with zero SBC config, but costs
-outbound minutes, keeps Genesys in the media path, and CLI presentation depends
-on the carrier. Fine for a pilot; not for 60 branches in production.
-
-### 5.3 What the Teams side sees
-
-The Teams AA is reached by *its* DID, so it does not know (or need to know)
-that the call came via Genesys. If the branch wants to see "via Genesys" in
-Teams, the SBC can prefix the display name on that route.
+calling plan / Operator Connect number. Zero SBC config, but costs outbound
+minutes, keeps Genesys in the media path, and CLI presentation depends on the
+carrier. Fine for a pilot; not for 60 branches in production.
 
 ## 6. Edge cases and decisions
 
 | Scenario | Behaviour | Decision owner |
 |----------|-----------|----------------|
-| DID not in table (new DID pointed at flow before row added) | Generic greeting, options 1 & 2 work, option 3 → ROS queue. Participant data `BranchFound=false` so it is reportable. | Built in |
+| DID not in table (new DID pointed at flow before row added) | Generic greeting ("our bank"), options 1 & 2 work, option 3 → ROS queue. Participant data `BranchName=our bank` makes it visible in reporting. | Built in |
 | Teams transfer fails (SBC down, AA not licensed, no answer within timeout) | Apology → ROS queue. | **Confirm fallback queue with business** |
-| Branch temporarily closed / Teams outage | Set `BranchTransferEnabled=false` for that row – option 3 goes to ROS with a "branch unavailable" message. No flow change. | Ops |
+| Branch temporarily closed / Teams outage | Blank the row's `TeamsDID` – option 3 goes to ROS with a "branch unavailable" message. No flow change. | Ops |
 | Caller presses nothing ×3 | Menu default choice → ROS. | Built in |
-| ROS/CB queue transfer fails (queue deleted/renamed) | Apology → disconnect. Covered by monitoring. | Built in |
+| ROS/CB queue transfer fails (queue deleted/renamed) | Failure transfer audio → flow error handling (apology → disconnect). | Built in |
 | After-hours | Not in scope. Options: Schedule Group on the call route, or a `ScheduleGroup` column per branch evaluated in the flow before the menu. | Future |
 | Same DID dialed in Teams AA loop (branch AA option "Contact Centre" dials the Genesys DID again) | Harmless – flow re-runs. Avoid loops by having the AA dial a *dedicated* contact-centre DID that is **not** in `BranchDirectory`. | Design note |
 
