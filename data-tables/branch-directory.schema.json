@@ -15,23 +15,43 @@
     "BranchCode": {
       "$id": "/properties/BranchCode",
       "title": "BranchCode",
-      "description": "Short branch code, attached as participant data",
+      "description": "Short branch code used in reporting and screen pop",
       "type": "string",
       "displayOrder": 1
     },
     "BranchName": {
       "$id": "/properties/BranchName",
       "title": "BranchName",
-      "description": "Spoken in the greeting and shown to agents",
+      "description": "Branch name spoken in prompts and shown to agents",
       "type": "string",
       "displayOrder": 2
+    },
+    "State": {
+      "$id": "/properties/State",
+      "title": "State",
+      "type": "string",
+      "displayOrder": 3
     },
     "TeamsDID": {
       "$id": "/properties/TeamsDID",
       "title": "TeamsDID",
-      "description": "Teams Auto Attendant number dialed on option 3, E.164. Leave blank to send option 3 to ROS instead.",
+      "description": "Teams Auto Attendant DID dialed for option 3, E.164",
       "type": "string",
-      "displayOrder": 3
+      "displayOrder": 4
+    },
+    "BranchTransferEnabled": {
+      "$id": "/properties/BranchTransferEnabled",
+      "title": "BranchTransferEnabled",
+      "description": "false = option 3 goes to the fallback queue without dialing Teams",
+      "type": "boolean",
+      "default": true,
+      "displayOrder": 5
+    },
+    "Notes": {
+      "$id": "/properties/Notes",
+      "title": "Notes",
+      "type": "string",
+      "displayOrder": 6
     }
   }
 }
