@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["key"],
+  "properties": {
+    "key": {
+      "$id": "/properties/key",
+      "title": "DID",
+      "description": "Dialed number presented to Genesys, E.164 (e.g. +61281233650)",
+      "type": "string",
+      "minLength": 1,
+      "displayOrder": 0
+    },
+    "BranchCode": {
+      "$id": "/properties/BranchCode",
+      "title": "BranchCode",
+      "description": "Short branch code used in reporting and screen pop",
+      "type": "string",
+      "displayOrder": 1
+    },
+    "BranchName": {
+      "$id": "/properties/BranchName",
+      "title": "BranchName",
+      "description": "Branch name spoken in prompts and shown to agents",
+      "type": "string",
+      "displayOrder": 2
+    },
+    "State": {
+      "$id": "/properties/State",
+      "title": "State",
+      "type": "string",
+      "displayOrder": 3
+    },
+    "TeamsDID": {
+      "$id": "/properties/TeamsDID",
+      "title": "TeamsDID",
+      "description": "Teams Auto Attendant DID dialed for option 3, E.164",
+      "type": "string",
+      "displayOrder": 4
+    },
+    "BranchTransferEnabled": {
+      "$id": "/properties/BranchTransferEnabled",
+      "title": "BranchTransferEnabled",
+      "description": "false = option 3 goes to the fallback queue without dialing Teams",
+      "type": "boolean",
+      "default": true,
+      "displayOrder": 5
+    },
+    "Notes": {
+      "$id": "/properties/Notes",
+      "title": "Notes",
+      "type": "string",
+      "displayOrder": 6
+    }
+  }
+}

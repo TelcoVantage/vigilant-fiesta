@@ -1,0 +1,329 @@
+# Archy definition – Genesys Cloud inbound call flow
+# Publish:  archy publish --file architect/Branch-Inbound-Main.yaml --clientId ... --clientSecret ... --location mypurecloud.com.au
+# Validate: archy validate --file architect/Branch-Inbound-Main.yaml
+#
+# One flow for all 60 branch DIDs. The dialed number is looked up in the
+# BranchDirectory data table; option 3 transfers to the branch's Teams DID.
+inboundCall:
+  name: Branch Inbound Main
+  description: Dynamic branch IVR – data table lookup on dialed DID, common 3-option menu, option 3 returns to the branch's Teams Auto Attendant.
+  division: Home
+  startUpRef: "/inboundCall/tasks/task[initialise]"
+  defaultLanguage: en-au
+  supportedLanguages:
+    en-au:
+      defaultLanguageSkill:
+        noValue: true
+      textToSpeech:
+        defaultEngine:
+          voice: Nicole
+
+  settingsActionDefaults:
+    collectInput:
+      noEntryTimeout:
+        lit:
+          seconds: 5
+    callData:
+      processingPrompt:
+        noValue: true
+    playAudioOnSilence:
+      timeout:
+        lit:
+          seconds: 40
+    detectSilence:
+      timeout:
+        lit:
+          seconds: 40
+
+  settingsErrorHandling:
+    errorHandling:
+      disconnect:
+        none: true
+    preHandlingAudio:
+      tts: We are sorry, we are experiencing technical difficulties. Please call back later.
+
+  settingsMenu:
+    extensionDialingMaxDelayToWait:
+      lit:
+        seconds: 1
+    listenForExtensionDialing:
+      lit: false
+    menuSelectionTimeout:
+      lit:
+        seconds: 6
+    repeatCount:
+      lit: 3
+
+  settingsSpeechRec:
+    asrEnabledOnFlow: false
+    suppressRecording: false
+
+  variables:
+    - stringVariable:
+        name: Flow.DialedNumber
+        description: Normalised E.164 number the caller dialed (data table key)
+        initialValue:
+          noValue: true
+    - booleanVariable:
+        name: Flow.BranchFound
+        description: true when the dialed DID exists in BranchDirectory
+        initialValue:
+          lit: false
+    - stringVariable:
+        name: Flow.BranchCode
+        initialValue:
+          noValue: true
+    - stringVariable:
+        name: Flow.BranchName
+        description: Spoken in prompts – defaults to a generic name when not found
+        initialValue:
+          lit: our bank
+    - stringVariable:
+        name: Flow.BranchState
+        initialValue:
+          noValue: true
+    - stringVariable:
+        name: Flow.TeamsDID
+        description: E.164 Teams Auto Attendant number dialed on option 3
+        initialValue:
+          noValue: true
+    - booleanVariable:
+        name: Flow.BranchTransferEnabled
+        initialValue:
+          lit: false
+
+  menus:
+    - menu:
+        name: Main Menu
+        refId: mainMenu
+        audio:
+          exp: ToAudioTTS("Thank you for calling " + Flow.BranchName + ". For R O S, press 1. For Country Banking, press 2. To speak to the branch, press 3.")
+        settingsMenu:
+          menuSelectionTimeout:
+            lit:
+              seconds: 6
+          repeatCount:
+            lit: 3
+        choices:
+          - menuTransferToAcd:
+              name: ROS
+              dtmf: digit_1
+              globalDtmf: false
+              targetQueue:
+                lit:
+                  name: ROS
+              preTransferAudio:
+                tts: Please hold while we connect you.
+              failureTransferAudio:
+                tts: We are sorry, we are unable to connect you right now. Please try again later.
+              priority:
+                lit: 0
+          - menuTransferToAcd:
+              name: Country Banking
+              dtmf: digit_2
+              globalDtmf: false
+              targetQueue:
+                lit:
+                  name: CB
+              preTransferAudio:
+                tts: Please hold while we connect you to Country Banking.
+              failureTransferAudio:
+                tts: We are sorry, we are unable to connect you right now. Please try again later.
+              priority:
+                lit: 0
+          - menuJumpToTask:
+              name: Speak to the Branch
+              dtmf: digit_3
+              globalDtmf: false
+              targetTaskRef: "/inboundCall/tasks/task[transferToBranch]"
+
+  tasks:
+    # ------------------------------------------------------------------
+    # Task 1 – identify the branch from the dialed number
+    # ------------------------------------------------------------------
+    - task:
+        name: Initialise
+        refId: initialise
+        actions:
+          - updateData:
+              name: Normalise dialed number
+              statements:
+                - string:
+                    variable: Flow.DialedNumber
+                    value:
+                      exp: Replace(ToString(Call.CalledAddressOriginal), "tel:", "")
+                - string:
+                    variable: Flow.DialedNumber
+                    value:
+                      exp: If(Left(Flow.DialedNumber, 1) == "0", "+61" + Substring(Flow.DialedNumber, 1), Flow.DialedNumber)
+
+          - dataTableLookup:
+              name: Lookup BranchDirectory
+              dataTable:
+                BranchDirectory
+              lookupValue:
+                exp: Flow.DialedNumber
+              outputs:
+                found:
+                  outputs:
+                    - name: BranchCode
+                      variable: Flow.BranchCode
+                    - name: BranchName
+                      variable: Flow.BranchName
+                    - name: State
+                      variable: Flow.BranchState
+                    - name: TeamsDID
+                      variable: Flow.TeamsDID
+                    - name: BranchTransferEnabled
+                      variable: Flow.BranchTransferEnabled
+                  actions:
+                    - updateData:
+                        name: Branch found
+                        statements:
+                          - boolean:
+                              variable: Flow.BranchFound
+                              value:
+                                lit: true
+                notFound:
+                  actions:
+                    - updateData:
+                        name: Branch not found – use generic values
+                        statements:
+                          - boolean:
+                              variable: Flow.BranchFound
+                              value:
+                                lit: false
+                          - string:
+                              variable: Flow.BranchName
+                              value:
+                                lit: our bank
+                          - boolean:
+                              variable: Flow.BranchTransferEnabled
+                              value:
+                                lit: false
+                failure:
+                  actions:
+                    - updateData:
+                        name: Lookup failed – use generic values
+                        statements:
+                          - boolean:
+                              variable: Flow.BranchFound
+                              value:
+                                lit: false
+                          - string:
+                              variable: Flow.BranchName
+                              value:
+                                lit: our bank
+                          - boolean:
+                              variable: Flow.BranchTransferEnabled
+                              value:
+                                lit: false
+
+          - setParticipantData:
+              name: Attach branch context for agents and reporting
+              attributes:
+                - attribute:
+                    name:
+                      lit: BranchName
+                    value:
+                      exp: Flow.BranchName
+                - attribute:
+                    name:
+                      lit: BranchCode
+                    value:
+                      exp: Flow.BranchCode
+                - attribute:
+                    name:
+                      lit: BranchState
+                    value:
+                      exp: Flow.BranchState
+                - attribute:
+                    name:
+                      lit: DialedDID
+                    value:
+                      exp: Flow.DialedNumber
+                - attribute:
+                    name:
+                      lit: BranchFound
+                    value:
+                      exp: ToString(Flow.BranchFound)
+
+          - jumpToMenu:
+              name: Go to Main Menu
+              targetMenuRef: "/inboundCall/menus/menu[mainMenu]"
+
+    # ------------------------------------------------------------------
+    # Task 2 – option 3: hand the call back to the branch in Teams
+    # ------------------------------------------------------------------
+    - task:
+        name: Transfer to Branch
+        refId: transferToBranch
+        actions:
+          - decision:
+              name: Branch known and transfer enabled?
+              condition:
+                exp: Flow.BranchFound and Flow.BranchTransferEnabled and !IsNotSetOrEmpty(Flow.TeamsDID)
+              outputs:
+                yes:
+                  actions:
+                    - playAudio:
+                        name: Announce branch transfer
+                        audio:
+                          exp: ToAudioTTS("Transferring you to the " + Flow.BranchName + " branch now. Please hold.")
+                    - transferToNumber:
+                        name: Transfer to branch Teams DID
+                        number:
+                          exp: Flow.TeamsDID
+                        preTransferAudio:
+                          noValue: true
+                        failureTransferAudio:
+                          tts: We are sorry, we could not connect you to the branch.
+                        outputs:
+                          failure:
+                            actions:
+                              - setParticipantData:
+                                  name: Flag Teams transfer failure
+                                  attributes:
+                                    - attribute:
+                                        name:
+                                          lit: TeamsTransferFailed
+                                        value:
+                                          lit: "true"
+                              - transferToAcd:
+                                  name: Fallback to ROS after failed branch transfer
+                                  targetQueue:
+                                    lit:
+                                      name: ROS
+                                  preTransferAudio:
+                                    tts: Please hold while we connect you to our team.
+                                  failureTransferAudio:
+                                    tts: We are sorry, we are unable to connect you right now. Please try again later.
+                                  priority:
+                                    lit: 0
+                                  outputs:
+                                    failure:
+                                      actions:
+                                        - disconnect:
+                                            name: Disconnect – no route available
+                no:
+                  actions:
+                    - playAudio:
+                        name: Branch unavailable
+                        audio:
+                          tts: The branch is not available right now. Please hold while we connect you to our team.
+                    - transferToAcd:
+                        name: Branch unavailable – route to ROS
+                        targetQueue:
+                          lit:
+                            name: ROS
+                        preTransferAudio:
+                          noValue: true
+                        failureTransferAudio:
+                          tts: We are sorry, we are unable to connect you right now. Please try again later.
+                        priority:
+                          lit: 0
+                        outputs:
+                          failure:
+                            actions:
+                              - disconnect:
+                                  name: Disconnect – no route available

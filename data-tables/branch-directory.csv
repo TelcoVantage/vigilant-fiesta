@@ -1,0 +1,9 @@
+DID,BranchCode,BranchName,State,TeamsDID,BranchTransferEnabled,Notes
++61281233650,PER,Perth,WA,+61881233650,true,Example from requirements – replace with real numbers
++61281233651,SYD,Sydney CBD,NSW,+61281233651,true,Sample row
++61281233652,MEL,Melbourne CBD,VIC,+61381233652,true,Sample row
++61281233653,BNE,Brisbane,QLD,+61781233653,true,Sample row
++61281233654,ADL,Adelaide,SA,+61881233654,true,Sample row
++61281233655,HBA,Hobart,TAS,+61381233655,true,Sample row
++61281233656,DRW,Darwin,NT,+61881233656,true,Sample row
++61281233657,CBR,Canberra,ACT,+61261233657,false,Sample row – transfer disabled (branch closed)
