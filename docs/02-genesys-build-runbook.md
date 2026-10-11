@@ -64,7 +64,27 @@ matches `+618…` (and every other Teams DID prefix you use) selects the SBC
 trunk. Simplest: one catch-all outbound route → SBC, and let the SBC decide
 Teams vs PSTN.
 
-## Step 4 – Publish the flow
+## Step 4 – Import (or publish) the flow
+
+### Option A – portal import (no tooling)
+
+1. (Optional, recommended) regenerate the file with your org's real queue /
+   data-table IDs so it validates on import:
+   `python scripts/genesys/build_i3inboundflow.py --resolve`
+2. Admin → Architect → Flows → **Inbound Call** → **Add** → name
+   `Branch Inbound Main`, division as required → Create.
+3. In the flow editor: **Save ▾ → Import** → choose
+   `architect/Branch-Inbound-Main.i3InboundFlow` → Import.
+   Importing replaces the flow's whole configuration.
+4. If you skipped step 1, Architect flags the queue pickers (ROS / CB, four
+   places) and the Data Table Lookup: re-select `ROS`, `CB` and
+   `BranchDirectory` by name.
+5. **Save**, then **Publish**.
+
+To inspect what you are importing: `architect/Branch-Inbound-Main.flow.json`
+is the decoded content (or run `scripts/genesys/decode-i3flow.py decode …`).
+
+### Option B – Archy (CLI / CI)
 
 ```bash
 archy validate --file architect/Branch-Inbound-Main.yaml
@@ -73,32 +93,13 @@ archy publish  --file architect/Branch-Inbound-Main.yaml \
                --location "$GENESYS_REGION" --forceUnlock
 ```
 
-### Alternative – import through the portal (`.i3InboundFlow`)
-
-If you prefer to import via Architect → Save ▾ → Import, generate the native
-file first (Archy must publish the YAML to an org once, then export it in
-Architect's native format):
-
-```bash
-scripts/genesys/make-i3inboundflow.sh
-# → architect/Branch-Inbound-Main.i3InboundFlow
-```
-
-Then in Architect: Flows → Inbound Call → **Add** (any name) → Save ▾ →
-**Import** → select the `.i3InboundFlow` → Import → Save → Publish.
-Importing replaces the whole configuration of the flow you import into.
-When importing into a *different* org, Architect re-resolves queues and the
-data table by name and shows validation errors for anything missing.
-
-To inspect what is inside an exported file:
-`python scripts/genesys/decode-i3flow.py decode architect/Branch-Inbound-Main.i3InboundFlow > /tmp/flow.json`.
-
 Then open Admin → Architect → `Branch Inbound Main` and check:
 
 1. Data Table Lookup action references `BranchDirectory` and all 6 output
    columns are mapped.
-2. Main Menu → *Settings* → **Default menu choice = Press 1 (ROS)** and
-   repeat count = 3 (set in the UI if Archy did not carry it).
+2. Main Menu → *Settings*: default menu choice = Press 1 (ROS), repeat
+   count 3, timeout 6 s (already set in the `.i3InboundFlow`; set in the UI
+   if you published via Archy and it did not carry over).
 3. Replace TTS prompts with recorded prompts if the business supplies them
    (TTS of "ROS" is unreliable – record it, or spell it `R.O.S.` in the TTS).
 4. Re-publish from the UI if you changed anything.

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# ALTERNATIVE route: publish the YAML with Archy and export the native file from the org.
+# (scripts/genesys/build_i3inboundflow.py generates the same file offline.)
 # Produce architect/Branch-Inbound-Main.i3InboundFlow – the native Architect
 # file you can import through the portal (Architect → flow → Save ▾ → Import).
 #

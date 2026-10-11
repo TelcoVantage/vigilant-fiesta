@@ -1,0 +1,4141 @@
+{
+  "defaultLanguage": "en-AU",
+  "description": "Dynamic branch IVR: data table lookup on the dialed DID, common 3-option menu, option 3 returns the call to the branch's Teams Auto Attendant.",
+  "initialSequence": "7b1b365c-b6a9-55d2-962f-0056f886c1b9",
+  "name": "Branch Inbound Main",
+  "nextTrackingNumber": 32,
+  "uiMetaData": {
+    "bridgeServerActions": [],
+    "screenPops": []
+  },
+  "supportedLanguages": [
+    "en-AU"
+  ],
+  "manifest": {
+    "queue": [
+      {
+        "name": "ROS",
+        "id": "aa6fee67-5d96-570f-b53c-648157414221",
+        "context": [
+          {
+            "actionName": "Transfer to ACD",
+            "id": "6a2faab1-5f94-5361-84a5-268dda50dce2",
+            "name": "Route to ROS"
+          },
+          {
+            "actionName": "Transfer to ACD",
+            "id": "b46ff962-40fc-5c95-a9d4-d282a5997047",
+            "name": "Route to ROS"
+          },
+          {
+            "actionName": "Transfer to ACD",
+            "id": "0aa6c322-a90f-5dd1-a30a-9ca6355d8dc1",
+            "name": "Transfer to ROS"
+          }
+        ]
+      },
+      {
+        "name": "CB",
+        "id": "08d7174c-fcbc-5197-b9df-062c49a11680",
+        "context": [
+          {
+            "actionName": "Transfer to ACD",
+            "id": "a7bb333b-a543-5bd2-88e5-55a026f2b55e",
+            "name": "Transfer to CB"
+          }
+        ]
+      }
+    ],
+    "dataTable": [
+      {
+        "name": "BranchDirectory",
+        "id": "55860e26-ddeb-527e-9dab-570e8c51974c",
+        "context": [
+          {
+            "actionName": "Data Table Lookup",
+            "id": "829313e0-6353-5b1f-8870-1c09435c8be4",
+            "name": "Lookup BranchDirectory"
+          }
+        ]
+      }
+    ],
+    "language": [
+      {
+        "id": "en-AU"
+      }
+    ],
+    "userPrompt": [],
+    "systemPrompt": []
+  },
+  "type": "inboundcall",
+  "isSecure": false,
+  "debugSettings": {},
+  "disableAsr": {
+    "config": {
+      "lit": {
+        "pos": 1,
+        "text": "false",
+        "type": "bln"
+      }
+    },
+    "text": "false",
+    "type": "bln",
+    "uiMetaData": {
+      "mode": 1
+    },
+    "metaData": {},
+    "version": 2
+  },
+  "disableAsrCompanyDirectory": {
+    "config": {
+      "lit": {
+        "pos": 1,
+        "text": "true",
+        "type": "bln"
+      }
+    },
+    "text": "true",
+    "type": "bln",
+    "uiMetaData": {
+      "mode": 1
+    },
+    "metaData": {},
+    "version": 2
+  },
+  "errorHandling": {
+    "audio": {
+      "bargeInExpression": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "true",
+            "type": "bln"
+          }
+        },
+        "text": "true",
+        "type": "bln",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "flushExpression": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "false",
+            "type": "bln"
+          }
+        },
+        "text": "false",
+        "type": "bln",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "defaultAudio": {
+        "config": {
+          "AudioPlaybackOptions": {
+            "pos": 1,
+            "operands": [
+              {
+                "ToAudioTTS": {
+                  "pos": 22,
+                  "operands": [
+                    {
+                      "lit": {
+                        "pos": 33,
+                        "text": "We are sorry, we are experiencing technical difficulties. Please call back later.",
+                        "type": "str"
+                      }
+                    }
+                  ],
+                  "type": "aud"
+                }
+              },
+              {
+                "lit": {
+                  "pos": 119,
+                  "text": "true",
+                  "type": "bln"
+                }
+              }
+            ],
+            "type": "aud",
+            "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are experiencing technical difficulties. Please call back later.\"), true)"
+          }
+        },
+        "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are experiencing technical difficulties. Please call back later.\"), true)",
+        "type": "aud",
+        "uiMetaData": {
+          "sequenceItems": [
+            {
+              "type": 0,
+              "parameter": "We are sorry, we are experiencing technical difficulties. Please call back later.",
+              "error": ""
+            }
+          ],
+          "customExpressionMode": false,
+          "optional": true
+        },
+        "metaData": {}
+      },
+      "cases": []
+    },
+    "queue": {
+      "config": {
+        "emp": {
+          "pos": 1,
+          "text": "",
+          "type": "que"
+        }
+      },
+      "text": "",
+      "type": "que",
+      "uiMetaData": {
+        "mode": 1
+      },
+      "metaData": {},
+      "version": 2
+    },
+    "handlingType": "Disconnect"
+  },
+  "initialPrompts": {
+    "bargeInExpression": {
+      "config": {
+        "lit": {
+          "pos": 1,
+          "text": "true",
+          "type": "bln"
+        }
+      },
+      "text": "true",
+      "type": "bln",
+      "uiMetaData": {
+        "mode": 1
+      },
+      "metaData": {},
+      "version": 2
+    },
+    "flushExpression": {
+      "config": {
+        "lit": {
+          "pos": 1,
+          "text": "false",
+          "type": "bln"
+        }
+      },
+      "text": "false",
+      "type": "bln",
+      "uiMetaData": {
+        "mode": 1
+      },
+      "metaData": {},
+      "version": 2
+    },
+    "defaultAudio": {
+      "config": {
+        "emp": {
+          "pos": 1,
+          "text": "",
+          "type": "aud"
+        }
+      },
+      "text": "",
+      "type": "aud",
+      "uiMetaData": {
+        "sequenceItems": [
+          {
+            "type": 0,
+            "parameter": ""
+          }
+        ],
+        "customExpressionMode": false,
+        "optional": true
+      },
+      "metaData": {}
+    },
+    "cases": []
+  },
+  "speechRecCompanyDirectory": {
+    "config": {
+      "lit": {
+        "pos": 1,
+        "text": "false",
+        "type": "bln"
+      }
+    },
+    "text": "false",
+    "type": "bln",
+    "uiMetaData": {
+      "mode": 1
+    },
+    "metaData": {},
+    "version": 2
+  },
+  "speechRecEngine": {
+    "config": {
+      "lit": {
+        "pos": 1,
+        "text": "",
+        "type": "str"
+      }
+    },
+    "text": "",
+    "type": "str",
+    "uiMetaData": {
+      "mode": 1
+    },
+    "metaData": {}
+  },
+  "suppressRecording": {
+    "config": {
+      "lit": {
+        "pos": 1,
+        "text": "false",
+        "type": "bln"
+      }
+    },
+    "text": "false",
+    "type": "bln",
+    "uiMetaData": {
+      "mode": 1
+    },
+    "metaData": {},
+    "version": 2
+  },
+  "customDefinitions": {
+    "dataTypeDefinitions": []
+  },
+  "defaultSettings": {
+    "PlayAudioOnSilenceAction": {
+      "allowedRepeatCount": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "5",
+            "type": "int"
+          }
+        },
+        "text": "5",
+        "type": "int",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "silenceDuration": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M1S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M1S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "timeout": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M40S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M40S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "DetectSilenceAction": {
+      "silenceDuration": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M1S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M1S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "timeout": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M40S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M40S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "DataAction": {
+      "processingPrompt": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "pmt"
+          }
+        },
+        "text": "",
+        "type": "pmt",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "CollectInputAction": {
+      "interDigitTimeout": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M3S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M3S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "noEntryTimeout": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M5S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M5S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "DialExtensionAction": {
+      "digitTimeout": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M6S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M6S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "TransferUserAction": {
+      "connTimeout": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "dur"
+          }
+        },
+        "text": "",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "TransferExternalAction": {
+      "connTimeout": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "dur"
+          }
+        },
+        "text": "",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "TransferGroupAction": {
+      "connTimeout": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "dur"
+          }
+        },
+        "text": "",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "TransferFlowSecureAction": {
+      "connTimeout": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M15S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M15S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "Menu": {
+      "promptRepeatCount": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "3",
+            "type": "int"
+          }
+        },
+        "text": "3",
+        "type": "int",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "promptRepeatDelay": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M10S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M10S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "extensionDialingDelay": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M1S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M1S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "useExtensionDialing": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "false",
+            "type": "bln"
+          }
+        },
+        "text": "false",
+        "type": "bln",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    "SpeechRec": {
+      "speechRecMinConfidence": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "50",
+            "type": "int"
+          }
+        },
+        "text": "50",
+        "type": "int",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "speechRecTimeoutComplete": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M0S100F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M0S100F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "speechRecTimeoutIncomplete": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M0S1500F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M0S1500F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "speechRecTimeoutTotal": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M20S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M20S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    }
+  },
+  "flowMetaData": {
+    "flowDocumentVersion": "1.0",
+    "minimumServerVersion": "1.0",
+    "ttsDataVersion": "1.0"
+  },
+  "flowSequenceItemList": [
+    {
+      "startAction": "6cdf5f03-1cca-5eff-a808-d362d93142b6",
+      "trackingId": 17,
+      "id": "7b1b365c-b6a9-55d2-962f-0056f886c1b9",
+      "name": "Initialise",
+      "uiMetaData": {
+        "collapsed": false
+      },
+      "__type": "Task",
+      "paths": [
+        {
+          "label": "Default",
+          "outputId": "__DEFAULT__"
+        }
+      ],
+      "actionList": [
+        {
+          "trackingId": 10,
+          "id": "6cdf5f03-1cca-5eff-a808-d362d93142b6",
+          "name": "Normalise dialed number",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "UpdateVariableAction",
+          "variables": [
+            {
+              "expression": {
+                "config": {
+                  "Replace": {
+                    "pos": 1,
+                    "operands": [
+                      {
+                        "sysref": {
+                          "pos": 9,
+                          "text": "Call.CalledAddressOriginal",
+                          "type": "str",
+                          "val": "__CALL_DNIS_ORIGINAL__"
+                        }
+                      },
+                      {
+                        "lit": {
+                          "pos": 37,
+                          "text": "tel:",
+                          "type": "str"
+                        }
+                      },
+                      {
+                        "lit": {
+                          "pos": 45,
+                          "text": "",
+                          "type": "str"
+                        }
+                      }
+                    ],
+                    "type": "str",
+                    "text": "Replace(Call.CalledAddressOriginal, \"tel:\", \"\")"
+                  }
+                },
+                "text": "Replace(Call.CalledAddressOriginal, \"tel:\", \"\")",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "__CALL_DNIS_ORIGINAL__",
+                      "type": "str",
+                      "isSysRef": true,
+                      "name": "Call.CalledAddressOriginal"
+                    }
+                  ]
+                },
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.DialedNumber",
+                    "type": "str",
+                    "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+                  }
+                },
+                "text": "Flow.DialedNumber",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.DialedNumber"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "If": {
+                    "pos": 1,
+                    "operands": [
+                      {
+                        "==": {
+                          "pos": 31,
+                          "operands": [
+                            {
+                              "Left": {
+                                "pos": 4,
+                                "operands": [
+                                  {
+                                    "ref": {
+                                      "pos": 9,
+                                      "text": "Flow.DialedNumber",
+                                      "type": "str",
+                                      "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+                                    }
+                                  },
+                                  {
+                                    "lit": {
+                                      "pos": 28,
+                                      "text": "1",
+                                      "type": "int"
+                                    }
+                                  }
+                                ],
+                                "type": "str"
+                              }
+                            },
+                            {
+                              "lit": {
+                                "pos": 34,
+                                "text": "0",
+                                "type": "str"
+                              }
+                            }
+                          ],
+                          "type": "bln"
+                        }
+                      },
+                      {
+                        "+": {
+                          "pos": 45,
+                          "operands": [
+                            {
+                              "lit": {
+                                "pos": 39,
+                                "text": "+61",
+                                "type": "str"
+                              }
+                            },
+                            {
+                              "Substring": {
+                                "pos": 47,
+                                "operands": [
+                                  {
+                                    "ref": {
+                                      "pos": 57,
+                                      "text": "Flow.DialedNumber",
+                                      "type": "str",
+                                      "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+                                    }
+                                  },
+                                  {
+                                    "lit": {
+                                      "pos": 76,
+                                      "text": "1",
+                                      "type": "int"
+                                    }
+                                  },
+                                  {
+                                    "-": {
+                                      "pos": 105,
+                                      "operands": [
+                                        {
+                                          "Length": {
+                                            "pos": 79,
+                                            "operands": [
+                                              {
+                                                "ref": {
+                                                  "pos": 86,
+                                                  "text": "Flow.DialedNumber",
+                                                  "type": "str",
+                                                  "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+                                                }
+                                              }
+                                            ],
+                                            "type": "int"
+                                          }
+                                        },
+                                        {
+                                          "lit": {
+                                            "pos": 107,
+                                            "text": "1",
+                                            "type": "int"
+                                          }
+                                        }
+                                      ],
+                                      "type": "int"
+                                    }
+                                  }
+                                ],
+                                "type": "str"
+                              }
+                            }
+                          ],
+                          "type": "str"
+                        }
+                      },
+                      {
+                        "ref": {
+                          "pos": 111,
+                          "text": "Flow.DialedNumber",
+                          "type": "str",
+                          "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+                        }
+                      }
+                    ],
+                    "type": "str",
+                    "text": "If(Left(Flow.DialedNumber, 1) == \"0\", \"+61\" + Substring(Flow.DialedNumber, 1, Length(Flow.DialedNumber) - 1), Flow.DialedNumber)"
+                  }
+                },
+                "text": "If(Left(Flow.DialedNumber, 1) == \"0\", \"+61\" + Substring(Flow.DialedNumber, 1, Length(Flow.DialedNumber) - 1), Flow.DialedNumber)",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.DialedNumber"
+                    }
+                  ]
+                },
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.DialedNumber",
+                    "type": "str",
+                    "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+                  }
+                },
+                "text": "Flow.DialedNumber",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.DialedNumber"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            }
+          ],
+          "nextAction": "829313e0-6353-5b1f-8870-1c09435c8be4"
+        },
+        {
+          "trackingId": 14,
+          "id": "829313e0-6353-5b1f-8870-1c09435c8be4",
+          "name": "Lookup BranchDirectory",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "DataTableLookupAction",
+          "datatableId": "55860e26-ddeb-527e-9dab-570e8c51974c",
+          "datatableName": "BranchDirectory",
+          "lookupKeyValue": {
+            "config": {
+              "ref": {
+                "pos": 1,
+                "text": "Flow.DialedNumber",
+                "type": "str",
+                "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+              }
+            },
+            "text": "Flow.DialedNumber",
+            "type": "str",
+            "uiMetaData": {
+              "mode": 0
+            },
+            "metaData": {
+              "references": [
+                {
+                  "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
+                  "type": "str",
+                  "isSysRef": false,
+                  "name": "Flow.DialedNumber"
+                }
+              ]
+            },
+            "version": 2,
+            "name": "lookupKeyValue"
+          },
+          "outputs": [
+            {
+              "name": "BranchCode",
+              "value": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchCode",
+                    "type": "str",
+                    "val": "1ffd10c4-f069-5add-8897-8ffd0eeef6fa"
+                  }
+                },
+                "text": "Flow.BranchCode",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "1ffd10c4-f069-5add-8897-8ffd0eeef6fa",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.BranchCode"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "name": "BranchName",
+              "value": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchName",
+                    "type": "str",
+                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
+                  }
+                },
+                "text": "Flow.BranchName",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.BranchName"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "name": "State",
+              "value": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchState",
+                    "type": "str",
+                    "val": "f910edf8-3386-5e89-b55e-934fa44069a8"
+                  }
+                },
+                "text": "Flow.BranchState",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "f910edf8-3386-5e89-b55e-934fa44069a8",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.BranchState"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "name": "TeamsDID",
+              "value": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.TeamsDID",
+                    "type": "str",
+                    "val": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6"
+                  }
+                },
+                "text": "Flow.TeamsDID",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.TeamsDID"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "name": "BranchTransferEnabled",
+              "value": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchTransferEnabled",
+                    "type": "bln",
+                    "val": "9f85943d-b4c5-5eb5-8337-fcddc270aa78"
+                  }
+                },
+                "text": "Flow.BranchTransferEnabled",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
+                      "type": "bln",
+                      "isSysRef": false,
+                      "name": "Flow.BranchTransferEnabled"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            }
+          ],
+          "errorBindings": [
+            {
+              "name": "errorType",
+              "value": {
+                "config": {
+                  "emp": {
+                    "pos": 1,
+                    "text": "",
+                    "type": "str"
+                  }
+                },
+                "text": "",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 3
+                },
+                "metaData": {},
+                "version": 2
+              }
+            },
+            {
+              "name": "errorMessage",
+              "value": {
+                "config": {
+                  "emp": {
+                    "pos": 1,
+                    "text": "",
+                    "type": "str"
+                  }
+                },
+                "text": "",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 3
+                },
+                "metaData": {},
+                "version": 2
+              }
+            }
+          ],
+          "paths": [
+            {
+              "label": "Found",
+              "outputId": "__FOUND__",
+              "nextActionId": "cfca2372-dcb2-55ab-8666-b6cec175a972"
+            },
+            {
+              "label": "Not Found",
+              "outputId": "__NOT_FOUND__",
+              "nextActionId": "ad09b566-1c2f-53df-9239-7b1648a81082"
+            },
+            {
+              "label": "Failure",
+              "outputId": "__FAILURE__",
+              "nextActionId": "6a101beb-f011-5d40-9a7d-6f6fdb25363d"
+            }
+          ],
+          "nextAction": "fdb6bcfd-698e-5b63-82e7-8852c45f09f9"
+        },
+        {
+          "trackingId": 11,
+          "id": "cfca2372-dcb2-55ab-8666-b6cec175a972",
+          "name": "Branch found",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "UpdateVariableAction",
+          "variables": [
+            {
+              "expression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "true",
+                    "type": "bln"
+                  }
+                },
+                "text": "true",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchFound",
+                    "type": "bln",
+                    "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
+                  }
+                },
+                "text": "Flow.BranchFound",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
+                      "type": "bln",
+                      "isSysRef": false,
+                      "name": "Flow.BranchFound"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            }
+          ]
+        },
+        {
+          "trackingId": 12,
+          "id": "ad09b566-1c2f-53df-9239-7b1648a81082",
+          "name": "Branch not found - generic values",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "UpdateVariableAction",
+          "variables": [
+            {
+              "expression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "false",
+                    "type": "bln"
+                  }
+                },
+                "text": "false",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchFound",
+                    "type": "bln",
+                    "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
+                  }
+                },
+                "text": "Flow.BranchFound",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
+                      "type": "bln",
+                      "isSysRef": false,
+                      "name": "Flow.BranchFound"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "our bank",
+                    "type": "str"
+                  }
+                },
+                "text": "\"our bank\"",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchName",
+                    "type": "str",
+                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
+                  }
+                },
+                "text": "Flow.BranchName",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.BranchName"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "false",
+                    "type": "bln"
+                  }
+                },
+                "text": "false",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchTransferEnabled",
+                    "type": "bln",
+                    "val": "9f85943d-b4c5-5eb5-8337-fcddc270aa78"
+                  }
+                },
+                "text": "Flow.BranchTransferEnabled",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
+                      "type": "bln",
+                      "isSysRef": false,
+                      "name": "Flow.BranchTransferEnabled"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            }
+          ]
+        },
+        {
+          "trackingId": 13,
+          "id": "6a101beb-f011-5d40-9a7d-6f6fdb25363d",
+          "name": "Lookup failed - generic values",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "UpdateVariableAction",
+          "variables": [
+            {
+              "expression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "false",
+                    "type": "bln"
+                  }
+                },
+                "text": "false",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchFound",
+                    "type": "bln",
+                    "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
+                  }
+                },
+                "text": "Flow.BranchFound",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
+                      "type": "bln",
+                      "isSysRef": false,
+                      "name": "Flow.BranchFound"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "our bank",
+                    "type": "str"
+                  }
+                },
+                "text": "\"our bank\"",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchName",
+                    "type": "str",
+                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
+                  }
+                },
+                "text": "Flow.BranchName",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.BranchName"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "false",
+                    "type": "bln"
+                  }
+                },
+                "text": "false",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchTransferEnabled",
+                    "type": "bln",
+                    "val": "9f85943d-b4c5-5eb5-8337-fcddc270aa78"
+                  }
+                },
+                "text": "Flow.BranchTransferEnabled",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 2
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
+                      "type": "bln",
+                      "isSysRef": false,
+                      "name": "Flow.BranchTransferEnabled"
+                    }
+                  ]
+                },
+                "version": 2
+              }
+            }
+          ]
+        },
+        {
+          "trackingId": 15,
+          "id": "fdb6bcfd-698e-5b63-82e7-8852c45f09f9",
+          "name": "Attach branch context for agents and reporting",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "SetAttributesAction",
+          "variables": [
+            {
+              "expression": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchName",
+                    "type": "str",
+                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
+                  }
+                },
+                "text": "Flow.BranchName",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.BranchName"
+                    }
+                  ]
+                },
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "BranchName",
+                    "type": "str"
+                  }
+                },
+                "text": "BranchName",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchCode",
+                    "type": "str",
+                    "val": "1ffd10c4-f069-5add-8897-8ffd0eeef6fa"
+                  }
+                },
+                "text": "Flow.BranchCode",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "1ffd10c4-f069-5add-8897-8ffd0eeef6fa",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.BranchCode"
+                    }
+                  ]
+                },
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "BranchCode",
+                    "type": "str"
+                  }
+                },
+                "text": "BranchCode",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.BranchState",
+                    "type": "str",
+                    "val": "f910edf8-3386-5e89-b55e-934fa44069a8"
+                  }
+                },
+                "text": "Flow.BranchState",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "f910edf8-3386-5e89-b55e-934fa44069a8",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.BranchState"
+                    }
+                  ]
+                },
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "BranchState",
+                    "type": "str"
+                  }
+                },
+                "text": "BranchState",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "ref": {
+                    "pos": 1,
+                    "text": "Flow.DialedNumber",
+                    "type": "str",
+                    "val": "6612c79b-200a-55ed-9b90-961e4b35c90e"
+                  }
+                },
+                "text": "Flow.DialedNumber",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
+                      "type": "str",
+                      "isSysRef": false,
+                      "name": "Flow.DialedNumber"
+                    }
+                  ]
+                },
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "DialedDID",
+                    "type": "str"
+                  }
+                },
+                "text": "DialedDID",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              }
+            },
+            {
+              "expression": {
+                "config": {
+                  "ToString": {
+                    "pos": 1,
+                    "operands": [
+                      {
+                        "ref": {
+                          "pos": 10,
+                          "text": "Flow.BranchFound",
+                          "type": "bln",
+                          "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
+                        }
+                      }
+                    ],
+                    "type": "str",
+                    "text": "ToString(Flow.BranchFound)"
+                  }
+                },
+                "text": "ToString(Flow.BranchFound)",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {
+                  "references": [
+                    {
+                      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
+                      "type": "bln",
+                      "isSysRef": false,
+                      "name": "Flow.BranchFound"
+                    }
+                  ]
+                },
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "BranchFound",
+                    "type": "str"
+                  }
+                },
+                "text": "BranchFound",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              }
+            }
+          ],
+          "nextAction": "819411bc-a0e5-58a1-88f1-a1da5d5255cf"
+        },
+        {
+          "trackingId": 16,
+          "id": "819411bc-a0e5-58a1-88f1-a1da5d5255cf",
+          "name": "Go to Main Menu",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "TransferMenuAction",
+          "menuReference": "03c07490-bff0-5646-8fa3-202f2625b560"
+        }
+      ],
+      "variables": []
+    },
+    {
+      "trackingId": 31,
+      "id": "03c07490-bff0-5646-8fa3-202f2625b560",
+      "name": "Main Menu",
+      "uiMetaData": {
+        "collapsed": false
+      },
+      "__type": "Menu",
+      "extensionDialingDelay": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "dur"
+          }
+        },
+        "text": "",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "invalidSpeechRecPromptsList": [],
+      "menuChoiceList": [
+        {
+          "globalSpeech": false,
+          "speechRecTerms": {
+            "en-AU": []
+          },
+          "id": "c7580c71-dff6-5184-9698-f80b55f8d1f9",
+          "name": "ROS",
+          "action": {
+            "trackingId": 28,
+            "id": "0aa6c322-a90f-5dd1-a30a-9ca6355d8dc1",
+            "name": "Transfer to ROS",
+            "uiMetaData": {
+              "collapsed": false
+            },
+            "__type": "TransferPureMatchAction",
+            "useDefaultHandling": true,
+            "appendSkills": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "languageSkill": {
+              "config": {
+                "emp": {
+                  "pos": 1,
+                  "text": "",
+                  "type": "lac"
+                }
+              },
+              "text": "",
+              "type": "lac",
+              "uiMetaData": {
+                "mode": 3
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "preferredAgents": {
+              "config": {
+                "emp": {
+                  "pos": 1,
+                  "text": "",
+                  "type": "cpx_agent_score_pair_coll"
+                }
+              },
+              "text": "",
+              "type": "cpx_agent_score_pair_coll",
+              "uiMetaData": {
+                "mode": 3
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "priority": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "0",
+                  "type": "int"
+                }
+              },
+              "text": "0",
+              "type": "int",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "queues": [
+              {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "ROS",
+                    "type": "que",
+                    "val": "aa6fee67-5d96-570f-b53c-648157414221"
+                  }
+                },
+                "text": "ROS",
+                "type": "que",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              }
+            ],
+            "skills": [],
+            "errorBindings": [
+              {
+                "name": "errorType",
+                "value": {
+                  "config": {
+                    "emp": {
+                      "pos": 1,
+                      "text": "",
+                      "type": "str"
+                    }
+                  },
+                  "text": "",
+                  "type": "str",
+                  "uiMetaData": {
+                    "mode": 3
+                  },
+                  "metaData": {},
+                  "version": 2
+                }
+              },
+              {
+                "name": "errorMessage",
+                "value": {
+                  "config": {
+                    "emp": {
+                      "pos": 1,
+                      "text": "",
+                      "type": "str"
+                    }
+                  },
+                  "text": "",
+                  "type": "str",
+                  "uiMetaData": {
+                    "mode": 3
+                  },
+                  "metaData": {},
+                  "version": 2
+                }
+              }
+            ],
+            "preTransferAudio": {
+              "bargeInExpression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "true",
+                    "type": "bln"
+                  }
+                },
+                "text": "true",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "flushExpression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "false",
+                    "type": "bln"
+                  }
+                },
+                "text": "false",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "defaultAudio": {
+                "config": {
+                  "AudioPlaybackOptions": {
+                    "pos": 1,
+                    "operands": [
+                      {
+                        "ToAudioTTS": {
+                          "pos": 22,
+                          "operands": [
+                            {
+                              "lit": {
+                                "pos": 33,
+                                "text": "Please hold while we connect you.",
+                                "type": "str"
+                              }
+                            }
+                          ],
+                          "type": "aud"
+                        }
+                      },
+                      {
+                        "lit": {
+                          "pos": 71,
+                          "text": "true",
+                          "type": "bln"
+                        }
+                      }
+                    ],
+                    "type": "aud",
+                    "text": "AudioPlaybackOptions(ToAudioTTS(\"Please hold while we connect you.\"), true)"
+                  }
+                },
+                "text": "AudioPlaybackOptions(ToAudioTTS(\"Please hold while we connect you.\"), true)",
+                "type": "aud",
+                "uiMetaData": {
+                  "sequenceItems": [
+                    {
+                      "type": 0,
+                      "parameter": "Please hold while we connect you.",
+                      "error": ""
+                    }
+                  ],
+                  "customExpressionMode": false
+                },
+                "metaData": {}
+              },
+              "cases": []
+            },
+            "failureTransferAudio": {
+              "bargeInExpression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "true",
+                    "type": "bln"
+                  }
+                },
+                "text": "true",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "flushExpression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "false",
+                    "type": "bln"
+                  }
+                },
+                "text": "false",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "defaultAudio": {
+                "config": {
+                  "AudioPlaybackOptions": {
+                    "pos": 1,
+                    "operands": [
+                      {
+                        "ToAudioTTS": {
+                          "pos": 22,
+                          "operands": [
+                            {
+                              "lit": {
+                                "pos": 33,
+                                "text": "We are sorry, we are unable to connect you right now. Please try again later.",
+                                "type": "str"
+                              }
+                            }
+                          ],
+                          "type": "aud"
+                        }
+                      },
+                      {
+                        "lit": {
+                          "pos": 115,
+                          "text": "true",
+                          "type": "bln"
+                        }
+                      }
+                    ],
+                    "type": "aud",
+                    "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are unable to connect you right now. Please try again later.\"), true)"
+                  }
+                },
+                "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are unable to connect you right now. Please try again later.\"), true)",
+                "type": "aud",
+                "uiMetaData": {
+                  "sequenceItems": [
+                    {
+                      "type": 0,
+                      "parameter": "We are sorry, we are unable to connect you right now. Please try again later.",
+                      "error": ""
+                    }
+                  ],
+                  "customExpressionMode": false
+                },
+                "metaData": {}
+              },
+              "cases": []
+            },
+            "paths": [
+              {
+                "label": "Failure",
+                "outputId": "__FAILURE__"
+              }
+            ]
+          },
+          "digit": 1
+        },
+        {
+          "globalSpeech": false,
+          "speechRecTerms": {
+            "en-AU": []
+          },
+          "id": "527390d1-cd93-5ad7-b288-fb6a13511dc3",
+          "name": "Country Banking",
+          "action": {
+            "trackingId": 29,
+            "id": "a7bb333b-a543-5bd2-88e5-55a026f2b55e",
+            "name": "Transfer to CB",
+            "uiMetaData": {
+              "collapsed": false
+            },
+            "__type": "TransferPureMatchAction",
+            "useDefaultHandling": true,
+            "appendSkills": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "languageSkill": {
+              "config": {
+                "emp": {
+                  "pos": 1,
+                  "text": "",
+                  "type": "lac"
+                }
+              },
+              "text": "",
+              "type": "lac",
+              "uiMetaData": {
+                "mode": 3
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "preferredAgents": {
+              "config": {
+                "emp": {
+                  "pos": 1,
+                  "text": "",
+                  "type": "cpx_agent_score_pair_coll"
+                }
+              },
+              "text": "",
+              "type": "cpx_agent_score_pair_coll",
+              "uiMetaData": {
+                "mode": 3
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "priority": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "0",
+                  "type": "int"
+                }
+              },
+              "text": "0",
+              "type": "int",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "queues": [
+              {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "CB",
+                    "type": "que",
+                    "val": "08d7174c-fcbc-5197-b9df-062c49a11680"
+                  }
+                },
+                "text": "CB",
+                "type": "que",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              }
+            ],
+            "skills": [],
+            "errorBindings": [
+              {
+                "name": "errorType",
+                "value": {
+                  "config": {
+                    "emp": {
+                      "pos": 1,
+                      "text": "",
+                      "type": "str"
+                    }
+                  },
+                  "text": "",
+                  "type": "str",
+                  "uiMetaData": {
+                    "mode": 3
+                  },
+                  "metaData": {},
+                  "version": 2
+                }
+              },
+              {
+                "name": "errorMessage",
+                "value": {
+                  "config": {
+                    "emp": {
+                      "pos": 1,
+                      "text": "",
+                      "type": "str"
+                    }
+                  },
+                  "text": "",
+                  "type": "str",
+                  "uiMetaData": {
+                    "mode": 3
+                  },
+                  "metaData": {},
+                  "version": 2
+                }
+              }
+            ],
+            "preTransferAudio": {
+              "bargeInExpression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "true",
+                    "type": "bln"
+                  }
+                },
+                "text": "true",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "flushExpression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "false",
+                    "type": "bln"
+                  }
+                },
+                "text": "false",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "defaultAudio": {
+                "config": {
+                  "AudioPlaybackOptions": {
+                    "pos": 1,
+                    "operands": [
+                      {
+                        "ToAudioTTS": {
+                          "pos": 22,
+                          "operands": [
+                            {
+                              "lit": {
+                                "pos": 33,
+                                "text": "Please hold while we connect you to Country Banking.",
+                                "type": "str"
+                              }
+                            }
+                          ],
+                          "type": "aud"
+                        }
+                      },
+                      {
+                        "lit": {
+                          "pos": 90,
+                          "text": "true",
+                          "type": "bln"
+                        }
+                      }
+                    ],
+                    "type": "aud",
+                    "text": "AudioPlaybackOptions(ToAudioTTS(\"Please hold while we connect you to Country Banking.\"), true)"
+                  }
+                },
+                "text": "AudioPlaybackOptions(ToAudioTTS(\"Please hold while we connect you to Country Banking.\"), true)",
+                "type": "aud",
+                "uiMetaData": {
+                  "sequenceItems": [
+                    {
+                      "type": 0,
+                      "parameter": "Please hold while we connect you to Country Banking.",
+                      "error": ""
+                    }
+                  ],
+                  "customExpressionMode": false
+                },
+                "metaData": {}
+              },
+              "cases": []
+            },
+            "failureTransferAudio": {
+              "bargeInExpression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "true",
+                    "type": "bln"
+                  }
+                },
+                "text": "true",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "flushExpression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "false",
+                    "type": "bln"
+                  }
+                },
+                "text": "false",
+                "type": "bln",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "defaultAudio": {
+                "config": {
+                  "AudioPlaybackOptions": {
+                    "pos": 1,
+                    "operands": [
+                      {
+                        "ToAudioTTS": {
+                          "pos": 22,
+                          "operands": [
+                            {
+                              "lit": {
+                                "pos": 33,
+                                "text": "We are sorry, we are unable to connect you right now. Please try again later.",
+                                "type": "str"
+                              }
+                            }
+                          ],
+                          "type": "aud"
+                        }
+                      },
+                      {
+                        "lit": {
+                          "pos": 115,
+                          "text": "true",
+                          "type": "bln"
+                        }
+                      }
+                    ],
+                    "type": "aud",
+                    "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are unable to connect you right now. Please try again later.\"), true)"
+                  }
+                },
+                "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are unable to connect you right now. Please try again later.\"), true)",
+                "type": "aud",
+                "uiMetaData": {
+                  "sequenceItems": [
+                    {
+                      "type": 0,
+                      "parameter": "We are sorry, we are unable to connect you right now. Please try again later.",
+                      "error": ""
+                    }
+                  ],
+                  "customExpressionMode": false
+                },
+                "metaData": {}
+              },
+              "cases": []
+            },
+            "paths": [
+              {
+                "label": "Failure",
+                "outputId": "__FAILURE__"
+              }
+            ]
+          },
+          "digit": 2
+        },
+        {
+          "globalSpeech": false,
+          "speechRecTerms": {
+            "en-AU": []
+          },
+          "id": "757b6707-f139-5454-9ec4-072041e2916b",
+          "name": "Speak to the Branch",
+          "action": {
+            "trackingId": 30,
+            "id": "68582bc1-93e3-5480-a073-5427e296a7f8",
+            "name": "Speak to the Branch",
+            "uiMetaData": {
+              "collapsed": false
+            },
+            "__type": "TaskAction",
+            "taskReference": "7a3dc907-48d3-5760-aea9-069d8442a545"
+          },
+          "digit": 3
+        }
+      ],
+      "defaultMenuChoice": "c7580c71-dff6-5184-9698-f80b55f8d1f9",
+      "promptRepeatCount": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "3",
+            "type": "int"
+          }
+        },
+        "text": "3",
+        "type": "int",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "promptRepeatDelay": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "P0D0H0M6S0F",
+            "type": "dur"
+          }
+        },
+        "text": "P0D0H0M6S0F",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "prompts": {
+        "bargeInExpression": {
+          "config": {
+            "lit": {
+              "pos": 1,
+              "text": "true",
+              "type": "bln"
+            }
+          },
+          "text": "true",
+          "type": "bln",
+          "uiMetaData": {
+            "mode": 1
+          },
+          "metaData": {},
+          "version": 2
+        },
+        "flushExpression": {
+          "config": {
+            "lit": {
+              "pos": 1,
+              "text": "false",
+              "type": "bln"
+            }
+          },
+          "text": "false",
+          "type": "bln",
+          "uiMetaData": {
+            "mode": 1
+          },
+          "metaData": {},
+          "version": 2
+        },
+        "defaultAudio": {
+          "config": {
+            "ToAudioTTS": {
+              "pos": 1,
+              "operands": [
+                {
+                  "+": {
+                    "pos": 55,
+                    "operands": [
+                      {
+                        "+": {
+                          "pos": 37,
+                          "operands": [
+                            {
+                              "lit": {
+                                "pos": 12,
+                                "text": "Thank you for calling ",
+                                "type": "str"
+                              }
+                            },
+                            {
+                              "ref": {
+                                "pos": 39,
+                                "text": "Flow.BranchName",
+                                "type": "str",
+                                "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
+                              }
+                            }
+                          ],
+                          "type": "str"
+                        }
+                      },
+                      {
+                        "lit": {
+                          "pos": 57,
+                          "text": ". For R O S, press 1. For Country Banking, press 2. To speak to the branch, press 3.",
+                          "type": "str"
+                        }
+                      }
+                    ],
+                    "type": "str"
+                  }
+                }
+              ],
+              "type": "aud",
+              "text": "ToAudioTTS(\"Thank you for calling \" + Flow.BranchName + \". For R O S, press 1. For Country Banking, press 2. To speak to the branch, press 3.\")"
+            }
+          },
+          "text": "ToAudioTTS(\"Thank you for calling \" + Flow.BranchName + \". For R O S, press 1. For Country Banking, press 2. To speak to the branch, press 3.\")",
+          "type": "aud",
+          "uiMetaData": {
+            "sequenceItems": [],
+            "customExpressionMode": true
+          },
+          "metaData": {
+            "references": [
+              {
+                "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
+                "type": "str",
+                "isSysRef": false,
+                "name": "Flow.BranchName"
+              }
+            ]
+          }
+        },
+        "cases": []
+      },
+      "speechRecMinConfidence": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "int"
+          }
+        },
+        "text": "",
+        "type": "int",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "speechRecTimeoutComplete": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "dur"
+          }
+        },
+        "text": "",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "speechRecTimeoutIncomplete": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "dur"
+          }
+        },
+        "text": "",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "speechRecTimeoutTotal": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "dur"
+          }
+        },
+        "text": "",
+        "type": "dur",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      },
+      "useExtensionDialing": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "false",
+            "type": "bln"
+          }
+        },
+        "text": "false",
+        "type": "bln",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    {
+      "startAction": "40d82bc1-f1e2-5d5c-8167-7863e8d9c011",
+      "trackingId": 27,
+      "id": "7a3dc907-48d3-5760-aea9-069d8442a545",
+      "name": "Transfer to Branch",
+      "uiMetaData": {
+        "collapsed": false
+      },
+      "__type": "Task",
+      "paths": [
+        {
+          "label": "Default",
+          "outputId": "__DEFAULT__"
+        }
+      ],
+      "actionList": [
+        {
+          "trackingId": 26,
+          "id": "40d82bc1-f1e2-5d5c-8167-7863e8d9c011",
+          "name": "Branch known and transfer enabled?",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "DecisionAction",
+          "expression": {
+            "config": {
+              "and": {
+                "pos": 49,
+                "operands": [
+                  {
+                    "and": {
+                      "pos": 18,
+                      "operands": [
+                        {
+                          "ref": {
+                            "pos": 1,
+                            "text": "Flow.BranchFound",
+                            "type": "bln",
+                            "val": "687031c6-b3dc-51be-8639-8ed626f031dd"
+                          }
+                        },
+                        {
+                          "ref": {
+                            "pos": 22,
+                            "text": "Flow.BranchTransferEnabled",
+                            "type": "bln",
+                            "val": "9f85943d-b4c5-5eb5-8337-fcddc270aa78"
+                          }
+                        }
+                      ],
+                      "type": "bln"
+                    }
+                  },
+                  {
+                    "!=": {
+                      "pos": 97,
+                      "operands": [
+                        {
+                          "If": {
+                            "pos": 53,
+                            "operands": [
+                              {
+                                "IsSet": {
+                                  "pos": 56,
+                                  "operands": [
+                                    {
+                                      "ref": {
+                                        "pos": 62,
+                                        "text": "Flow.TeamsDID",
+                                        "type": "str",
+                                        "val": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6"
+                                      }
+                                    }
+                                  ],
+                                  "type": "bln"
+                                }
+                              },
+                              {
+                                "ref": {
+                                  "pos": 78,
+                                  "text": "Flow.TeamsDID",
+                                  "type": "str",
+                                  "val": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6"
+                                }
+                              },
+                              {
+                                "lit": {
+                                  "pos": 93,
+                                  "text": "",
+                                  "type": "str"
+                                }
+                              }
+                            ],
+                            "type": "str"
+                          }
+                        },
+                        {
+                          "lit": {
+                            "pos": 100,
+                            "text": "",
+                            "type": "str"
+                          }
+                        }
+                      ],
+                      "type": "bln"
+                    }
+                  }
+                ],
+                "type": "bln",
+                "text": "Flow.BranchFound and Flow.BranchTransferEnabled and If(IsSet(Flow.TeamsDID), Flow.TeamsDID, \"\") != \"\""
+              }
+            },
+            "text": "Flow.BranchFound and Flow.BranchTransferEnabled and If(IsSet(Flow.TeamsDID), Flow.TeamsDID, \"\") != \"\"",
+            "type": "bln",
+            "uiMetaData": {
+              "mode": 0
+            },
+            "metaData": {
+              "references": [
+                {
+                  "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
+                  "type": "bln",
+                  "isSysRef": false,
+                  "name": "Flow.BranchFound"
+                },
+                {
+                  "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
+                  "type": "bln",
+                  "isSysRef": false,
+                  "name": "Flow.BranchTransferEnabled"
+                },
+                {
+                  "id": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6",
+                  "type": "str",
+                  "isSysRef": false,
+                  "name": "Flow.TeamsDID"
+                }
+              ]
+            },
+            "version": 2
+          },
+          "paths": [
+            {
+              "label": "Yes",
+              "outputId": "__YES__",
+              "nextActionId": "45e61071-e865-51d5-9077-5f6c56b44764"
+            },
+            {
+              "label": "No",
+              "outputId": "__NO__",
+              "nextActionId": "3bafd11b-b7d3-5efe-ae27-e4b53b88fece"
+            }
+          ]
+        },
+        {
+          "trackingId": 18,
+          "id": "45e61071-e865-51d5-9077-5f6c56b44764",
+          "name": "Announce branch transfer",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "PlayAudioAction",
+          "prompts": {
+            "bargeInExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "true",
+                  "type": "bln"
+                }
+              },
+              "text": "true",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "flushExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "defaultAudio": {
+              "config": {
+                "ToAudioTTS": {
+                  "pos": 1,
+                  "operands": [
+                    {
+                      "+": {
+                        "pos": 57,
+                        "operands": [
+                          {
+                            "+": {
+                              "pos": 39,
+                              "operands": [
+                                {
+                                  "lit": {
+                                    "pos": 12,
+                                    "text": "Transferring you to the ",
+                                    "type": "str"
+                                  }
+                                },
+                                {
+                                  "ref": {
+                                    "pos": 41,
+                                    "text": "Flow.BranchName",
+                                    "type": "str",
+                                    "val": "9edcb3b5-e14b-5d9c-b21f-40096e41886e"
+                                  }
+                                }
+                              ],
+                              "type": "str"
+                            }
+                          },
+                          {
+                            "lit": {
+                              "pos": 59,
+                              "text": " branch now. Please hold.",
+                              "type": "str"
+                            }
+                          }
+                        ],
+                        "type": "str"
+                      }
+                    }
+                  ],
+                  "type": "aud",
+                  "text": "ToAudioTTS(\"Transferring you to the \" + Flow.BranchName + \" branch now. Please hold.\")"
+                }
+              },
+              "text": "ToAudioTTS(\"Transferring you to the \" + Flow.BranchName + \" branch now. Please hold.\")",
+              "type": "aud",
+              "uiMetaData": {
+                "sequenceItems": [],
+                "customExpressionMode": true
+              },
+              "metaData": {
+                "references": [
+                  {
+                    "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
+                    "type": "str",
+                    "isSysRef": false,
+                    "name": "Flow.BranchName"
+                  }
+                ]
+              }
+            },
+            "cases": []
+          },
+          "nextAction": "5a677bbd-1bcb-5086-a24b-e1cd40b4d5bd"
+        },
+        {
+          "trackingId": 22,
+          "id": "5a677bbd-1bcb-5086-a24b-e1cd40b4d5bd",
+          "name": "Transfer to branch Teams DID",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "TransferExternalAction",
+          "externalNumber": {
+            "config": {
+              "ref": {
+                "pos": 1,
+                "text": "Flow.TeamsDID",
+                "type": "str",
+                "val": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6"
+              }
+            },
+            "text": "Flow.TeamsDID",
+            "type": "str",
+            "uiMetaData": {
+              "mode": 0
+            },
+            "metaData": {
+              "references": [
+                {
+                  "id": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6",
+                  "type": "str",
+                  "isSysRef": false,
+                  "name": "Flow.TeamsDID"
+                }
+              ]
+            },
+            "version": 2
+          },
+          "releaseLinkTransfer": {
+            "config": {
+              "lit": {
+                "pos": 1,
+                "text": "false",
+                "type": "bln"
+              }
+            },
+            "text": "false",
+            "type": "bln",
+            "uiMetaData": {
+              "mode": 1
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "connTimeout": {
+            "config": {
+              "emp": {
+                "pos": 1,
+                "text": "",
+                "type": "dur"
+              }
+            },
+            "text": "",
+            "type": "dur",
+            "uiMetaData": {
+              "mode": 3
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "errorBindings": [
+            {
+              "name": "errorType",
+              "value": {
+                "config": {
+                  "emp": {
+                    "pos": 1,
+                    "text": "",
+                    "type": "str"
+                  }
+                },
+                "text": "",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 3
+                },
+                "metaData": {},
+                "version": 2
+              }
+            },
+            {
+              "name": "errorMessage",
+              "value": {
+                "config": {
+                  "emp": {
+                    "pos": 1,
+                    "text": "",
+                    "type": "str"
+                  }
+                },
+                "text": "",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 3
+                },
+                "metaData": {},
+                "version": 2
+              }
+            }
+          ],
+          "preTransferAudio": {
+            "bargeInExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "true",
+                  "type": "bln"
+                }
+              },
+              "text": "true",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "flushExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "defaultAudio": {
+              "config": {
+                "emp": {
+                  "pos": 1,
+                  "text": "",
+                  "type": "aud"
+                }
+              },
+              "text": "",
+              "type": "aud",
+              "uiMetaData": {
+                "sequenceItems": [
+                  {
+                    "type": 0,
+                    "parameter": ""
+                  }
+                ],
+                "customExpressionMode": false
+              },
+              "metaData": {}
+            },
+            "cases": []
+          },
+          "failureTransferAudio": {
+            "bargeInExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "true",
+                  "type": "bln"
+                }
+              },
+              "text": "true",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "flushExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "defaultAudio": {
+              "config": {
+                "AudioPlaybackOptions": {
+                  "pos": 1,
+                  "operands": [
+                    {
+                      "ToAudioTTS": {
+                        "pos": 22,
+                        "operands": [
+                          {
+                            "lit": {
+                              "pos": 33,
+                              "text": "We are sorry, we could not connect you to the branch.",
+                              "type": "str"
+                            }
+                          }
+                        ],
+                        "type": "aud"
+                      }
+                    },
+                    {
+                      "lit": {
+                        "pos": 91,
+                        "text": "true",
+                        "type": "bln"
+                      }
+                    }
+                  ],
+                  "type": "aud",
+                  "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we could not connect you to the branch.\"), true)"
+                }
+              },
+              "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we could not connect you to the branch.\"), true)",
+              "type": "aud",
+              "uiMetaData": {
+                "sequenceItems": [
+                  {
+                    "type": 0,
+                    "parameter": "We are sorry, we could not connect you to the branch.",
+                    "error": ""
+                  }
+                ],
+                "customExpressionMode": false
+              },
+              "metaData": {}
+            },
+            "cases": []
+          },
+          "paths": [
+            {
+              "label": "Failure",
+              "outputId": "__FAILURE__",
+              "nextActionId": "fff369d9-23ba-5c28-bd91-9c61508f1282"
+            }
+          ]
+        },
+        {
+          "trackingId": 19,
+          "id": "fff369d9-23ba-5c28-bd91-9c61508f1282",
+          "name": "Flag Teams transfer failure",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "SetAttributesAction",
+          "variables": [
+            {
+              "expression": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "true",
+                    "type": "str"
+                  }
+                },
+                "text": "\"true\"",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 0
+                },
+                "metaData": {},
+                "version": 2
+              },
+              "variable": {
+                "config": {
+                  "lit": {
+                    "pos": 1,
+                    "text": "TeamsTransferFailed",
+                    "type": "str"
+                  }
+                },
+                "text": "TeamsTransferFailed",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 1
+                },
+                "metaData": {},
+                "version": 2
+              }
+            }
+          ],
+          "nextAction": "6a2faab1-5f94-5361-84a5-268dda50dce2"
+        },
+        {
+          "trackingId": 21,
+          "id": "6a2faab1-5f94-5361-84a5-268dda50dce2",
+          "name": "Route to ROS",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "TransferPureMatchAction",
+          "useDefaultHandling": false,
+          "appendSkills": {
+            "config": {
+              "lit": {
+                "pos": 1,
+                "text": "false",
+                "type": "bln"
+              }
+            },
+            "text": "false",
+            "type": "bln",
+            "uiMetaData": {
+              "mode": 1
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "languageSkill": {
+            "config": {
+              "emp": {
+                "pos": 1,
+                "text": "",
+                "type": "lac"
+              }
+            },
+            "text": "",
+            "type": "lac",
+            "uiMetaData": {
+              "mode": 3
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "preferredAgents": {
+            "config": {
+              "emp": {
+                "pos": 1,
+                "text": "",
+                "type": "cpx_agent_score_pair_coll"
+              }
+            },
+            "text": "",
+            "type": "cpx_agent_score_pair_coll",
+            "uiMetaData": {
+              "mode": 3
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "priority": {
+            "config": {
+              "lit": {
+                "pos": 1,
+                "text": "0",
+                "type": "int"
+              }
+            },
+            "text": "0",
+            "type": "int",
+            "uiMetaData": {
+              "mode": 1
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "queues": [
+            {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "ROS",
+                  "type": "que",
+                  "val": "aa6fee67-5d96-570f-b53c-648157414221"
+                }
+              },
+              "text": "ROS",
+              "type": "que",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            }
+          ],
+          "skills": [],
+          "errorBindings": [
+            {
+              "name": "errorType",
+              "value": {
+                "config": {
+                  "emp": {
+                    "pos": 1,
+                    "text": "",
+                    "type": "str"
+                  }
+                },
+                "text": "",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 3
+                },
+                "metaData": {},
+                "version": 2
+              }
+            },
+            {
+              "name": "errorMessage",
+              "value": {
+                "config": {
+                  "emp": {
+                    "pos": 1,
+                    "text": "",
+                    "type": "str"
+                  }
+                },
+                "text": "",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 3
+                },
+                "metaData": {},
+                "version": 2
+              }
+            }
+          ],
+          "preTransferAudio": {
+            "bargeInExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "true",
+                  "type": "bln"
+                }
+              },
+              "text": "true",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "flushExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "defaultAudio": {
+              "config": {
+                "AudioPlaybackOptions": {
+                  "pos": 1,
+                  "operands": [
+                    {
+                      "ToAudioTTS": {
+                        "pos": 22,
+                        "operands": [
+                          {
+                            "lit": {
+                              "pos": 33,
+                              "text": "Please hold while we connect you to our team.",
+                              "type": "str"
+                            }
+                          }
+                        ],
+                        "type": "aud"
+                      }
+                    },
+                    {
+                      "lit": {
+                        "pos": 83,
+                        "text": "true",
+                        "type": "bln"
+                      }
+                    }
+                  ],
+                  "type": "aud",
+                  "text": "AudioPlaybackOptions(ToAudioTTS(\"Please hold while we connect you to our team.\"), true)"
+                }
+              },
+              "text": "AudioPlaybackOptions(ToAudioTTS(\"Please hold while we connect you to our team.\"), true)",
+              "type": "aud",
+              "uiMetaData": {
+                "sequenceItems": [
+                  {
+                    "type": 0,
+                    "parameter": "Please hold while we connect you to our team.",
+                    "error": ""
+                  }
+                ],
+                "customExpressionMode": false
+              },
+              "metaData": {}
+            },
+            "cases": []
+          },
+          "failureTransferAudio": {
+            "bargeInExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "true",
+                  "type": "bln"
+                }
+              },
+              "text": "true",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "flushExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "defaultAudio": {
+              "config": {
+                "AudioPlaybackOptions": {
+                  "pos": 1,
+                  "operands": [
+                    {
+                      "ToAudioTTS": {
+                        "pos": 22,
+                        "operands": [
+                          {
+                            "lit": {
+                              "pos": 33,
+                              "text": "We are sorry, we are unable to connect you right now. Please try again later.",
+                              "type": "str"
+                            }
+                          }
+                        ],
+                        "type": "aud"
+                      }
+                    },
+                    {
+                      "lit": {
+                        "pos": 115,
+                        "text": "true",
+                        "type": "bln"
+                      }
+                    }
+                  ],
+                  "type": "aud",
+                  "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are unable to connect you right now. Please try again later.\"), true)"
+                }
+              },
+              "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are unable to connect you right now. Please try again later.\"), true)",
+              "type": "aud",
+              "uiMetaData": {
+                "sequenceItems": [
+                  {
+                    "type": 0,
+                    "parameter": "We are sorry, we are unable to connect you right now. Please try again later.",
+                    "error": ""
+                  }
+                ],
+                "customExpressionMode": false
+              },
+              "metaData": {}
+            },
+            "cases": []
+          },
+          "paths": [
+            {
+              "label": "Failure",
+              "outputId": "__FAILURE__",
+              "nextActionId": "5a3998ab-2e60-5bc9-a205-38157ef48c26"
+            }
+          ]
+        },
+        {
+          "trackingId": 20,
+          "id": "5a3998ab-2e60-5bc9-a205-38157ef48c26",
+          "name": "Disconnect - no route available",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "DisconnectAction"
+        },
+        {
+          "trackingId": 23,
+          "id": "3bafd11b-b7d3-5efe-ae27-e4b53b88fece",
+          "name": "Branch unavailable",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "PlayAudioAction",
+          "prompts": {
+            "bargeInExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "true",
+                  "type": "bln"
+                }
+              },
+              "text": "true",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "flushExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "defaultAudio": {
+              "config": {
+                "AudioPlaybackOptions": {
+                  "pos": 1,
+                  "operands": [
+                    {
+                      "ToAudioTTS": {
+                        "pos": 22,
+                        "operands": [
+                          {
+                            "lit": {
+                              "pos": 33,
+                              "text": "The branch is not available right now. Please hold while we connect you to our team.",
+                              "type": "str"
+                            }
+                          }
+                        ],
+                        "type": "aud"
+                      }
+                    },
+                    {
+                      "lit": {
+                        "pos": 122,
+                        "text": "true",
+                        "type": "bln"
+                      }
+                    }
+                  ],
+                  "type": "aud",
+                  "text": "AudioPlaybackOptions(ToAudioTTS(\"The branch is not available right now. Please hold while we connect you to our team.\"), true)"
+                }
+              },
+              "text": "AudioPlaybackOptions(ToAudioTTS(\"The branch is not available right now. Please hold while we connect you to our team.\"), true)",
+              "type": "aud",
+              "uiMetaData": {
+                "sequenceItems": [
+                  {
+                    "type": 0,
+                    "parameter": "The branch is not available right now. Please hold while we connect you to our team.",
+                    "error": ""
+                  }
+                ],
+                "customExpressionMode": false
+              },
+              "metaData": {}
+            },
+            "cases": []
+          },
+          "nextAction": "b46ff962-40fc-5c95-a9d4-d282a5997047"
+        },
+        {
+          "trackingId": 25,
+          "id": "b46ff962-40fc-5c95-a9d4-d282a5997047",
+          "name": "Route to ROS",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "TransferPureMatchAction",
+          "useDefaultHandling": false,
+          "appendSkills": {
+            "config": {
+              "lit": {
+                "pos": 1,
+                "text": "false",
+                "type": "bln"
+              }
+            },
+            "text": "false",
+            "type": "bln",
+            "uiMetaData": {
+              "mode": 1
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "languageSkill": {
+            "config": {
+              "emp": {
+                "pos": 1,
+                "text": "",
+                "type": "lac"
+              }
+            },
+            "text": "",
+            "type": "lac",
+            "uiMetaData": {
+              "mode": 3
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "preferredAgents": {
+            "config": {
+              "emp": {
+                "pos": 1,
+                "text": "",
+                "type": "cpx_agent_score_pair_coll"
+              }
+            },
+            "text": "",
+            "type": "cpx_agent_score_pair_coll",
+            "uiMetaData": {
+              "mode": 3
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "priority": {
+            "config": {
+              "lit": {
+                "pos": 1,
+                "text": "0",
+                "type": "int"
+              }
+            },
+            "text": "0",
+            "type": "int",
+            "uiMetaData": {
+              "mode": 1
+            },
+            "metaData": {},
+            "version": 2
+          },
+          "queues": [
+            {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "ROS",
+                  "type": "que",
+                  "val": "aa6fee67-5d96-570f-b53c-648157414221"
+                }
+              },
+              "text": "ROS",
+              "type": "que",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            }
+          ],
+          "skills": [],
+          "errorBindings": [
+            {
+              "name": "errorType",
+              "value": {
+                "config": {
+                  "emp": {
+                    "pos": 1,
+                    "text": "",
+                    "type": "str"
+                  }
+                },
+                "text": "",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 3
+                },
+                "metaData": {},
+                "version": 2
+              }
+            },
+            {
+              "name": "errorMessage",
+              "value": {
+                "config": {
+                  "emp": {
+                    "pos": 1,
+                    "text": "",
+                    "type": "str"
+                  }
+                },
+                "text": "",
+                "type": "str",
+                "uiMetaData": {
+                  "mode": 3
+                },
+                "metaData": {},
+                "version": 2
+              }
+            }
+          ],
+          "preTransferAudio": {
+            "bargeInExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "true",
+                  "type": "bln"
+                }
+              },
+              "text": "true",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "flushExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "defaultAudio": {
+              "config": {
+                "emp": {
+                  "pos": 1,
+                  "text": "",
+                  "type": "aud"
+                }
+              },
+              "text": "",
+              "type": "aud",
+              "uiMetaData": {
+                "sequenceItems": [
+                  {
+                    "type": 0,
+                    "parameter": ""
+                  }
+                ],
+                "customExpressionMode": false
+              },
+              "metaData": {}
+            },
+            "cases": []
+          },
+          "failureTransferAudio": {
+            "bargeInExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "true",
+                  "type": "bln"
+                }
+              },
+              "text": "true",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "flushExpression": {
+              "config": {
+                "lit": {
+                  "pos": 1,
+                  "text": "false",
+                  "type": "bln"
+                }
+              },
+              "text": "false",
+              "type": "bln",
+              "uiMetaData": {
+                "mode": 1
+              },
+              "metaData": {},
+              "version": 2
+            },
+            "defaultAudio": {
+              "config": {
+                "AudioPlaybackOptions": {
+                  "pos": 1,
+                  "operands": [
+                    {
+                      "ToAudioTTS": {
+                        "pos": 22,
+                        "operands": [
+                          {
+                            "lit": {
+                              "pos": 33,
+                              "text": "We are sorry, we are unable to connect you right now. Please try again later.",
+                              "type": "str"
+                            }
+                          }
+                        ],
+                        "type": "aud"
+                      }
+                    },
+                    {
+                      "lit": {
+                        "pos": 115,
+                        "text": "true",
+                        "type": "bln"
+                      }
+                    }
+                  ],
+                  "type": "aud",
+                  "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are unable to connect you right now. Please try again later.\"), true)"
+                }
+              },
+              "text": "AudioPlaybackOptions(ToAudioTTS(\"We are sorry, we are unable to connect you right now. Please try again later.\"), true)",
+              "type": "aud",
+              "uiMetaData": {
+                "sequenceItems": [
+                  {
+                    "type": 0,
+                    "parameter": "We are sorry, we are unable to connect you right now. Please try again later.",
+                    "error": ""
+                  }
+                ],
+                "customExpressionMode": false
+              },
+              "metaData": {}
+            },
+            "cases": []
+          },
+          "paths": [
+            {
+              "label": "Failure",
+              "outputId": "__FAILURE__",
+              "nextActionId": "3b016de2-2cb0-5069-a02a-059837155300"
+            }
+          ]
+        },
+        {
+          "trackingId": 24,
+          "id": "3b016de2-2cb0-5069-a02a-059837155300",
+          "name": "Disconnect - no route available",
+          "uiMetaData": {
+            "collapsed": false
+          },
+          "__type": "DisconnectAction"
+        }
+      ],
+      "variables": []
+    }
+  ],
+  "supportedLanguageOptions": [
+    {
+      "language": "en-AU",
+      "languageSkill": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "lac"
+          }
+        },
+        "text": "",
+        "type": "lac",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "6612c79b-200a-55ed-9b90-961e4b35c90e",
+      "isCollection": false,
+      "isInternal": false,
+      "isOutput": false,
+      "isInput": false,
+      "isSecure": false,
+      "version": "1.0",
+      "__type": "StringVariable",
+      "name": "Flow.DialedNumber",
+      "initialValue": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "str"
+          }
+        },
+        "text": "",
+        "type": "str",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    {
+      "id": "687031c6-b3dc-51be-8639-8ed626f031dd",
+      "isCollection": false,
+      "isInternal": false,
+      "isOutput": false,
+      "isInput": false,
+      "isSecure": false,
+      "version": "1.0",
+      "__type": "BoolVariable",
+      "name": "Flow.BranchFound",
+      "initialValue": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "false",
+            "type": "bln"
+          }
+        },
+        "text": "false",
+        "type": "bln",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    {
+      "id": "1ffd10c4-f069-5add-8897-8ffd0eeef6fa",
+      "isCollection": false,
+      "isInternal": false,
+      "isOutput": false,
+      "isInput": false,
+      "isSecure": false,
+      "version": "1.0",
+      "__type": "StringVariable",
+      "name": "Flow.BranchCode",
+      "initialValue": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "str"
+          }
+        },
+        "text": "",
+        "type": "str",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    {
+      "id": "9edcb3b5-e14b-5d9c-b21f-40096e41886e",
+      "isCollection": false,
+      "isInternal": false,
+      "isOutput": false,
+      "isInput": false,
+      "isSecure": false,
+      "version": "1.0",
+      "__type": "StringVariable",
+      "name": "Flow.BranchName",
+      "initialValue": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "our bank",
+            "type": "str"
+          }
+        },
+        "text": "our bank",
+        "type": "str",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    {
+      "id": "f910edf8-3386-5e89-b55e-934fa44069a8",
+      "isCollection": false,
+      "isInternal": false,
+      "isOutput": false,
+      "isInput": false,
+      "isSecure": false,
+      "version": "1.0",
+      "__type": "StringVariable",
+      "name": "Flow.BranchState",
+      "initialValue": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "str"
+          }
+        },
+        "text": "",
+        "type": "str",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    {
+      "id": "7d2491e8-fb4e-5295-ac1a-295d5d850ee6",
+      "isCollection": false,
+      "isInternal": false,
+      "isOutput": false,
+      "isInput": false,
+      "isSecure": false,
+      "version": "1.0",
+      "__type": "StringVariable",
+      "name": "Flow.TeamsDID",
+      "initialValue": {
+        "config": {
+          "emp": {
+            "pos": 1,
+            "text": "",
+            "type": "str"
+          }
+        },
+        "text": "",
+        "type": "str",
+        "uiMetaData": {
+          "mode": 3
+        },
+        "metaData": {},
+        "version": 2
+      }
+    },
+    {
+      "id": "9f85943d-b4c5-5eb5-8337-fcddc270aa78",
+      "isCollection": false,
+      "isInternal": false,
+      "isOutput": false,
+      "isInput": false,
+      "isSecure": false,
+      "version": "1.0",
+      "__type": "BoolVariable",
+      "name": "Flow.BranchTransferEnabled",
+      "initialValue": {
+        "config": {
+          "lit": {
+            "pos": 1,
+            "text": "false",
+            "type": "bln"
+          }
+        },
+        "text": "false",
+        "type": "bln",
+        "uiMetaData": {
+          "mode": 1
+        },
+        "metaData": {},
+        "version": 2
+      }
+    }
+  ]
+}
