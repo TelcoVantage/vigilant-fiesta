@@ -73,6 +73,26 @@ archy publish  --file architect/Branch-Inbound-Main.yaml \
                --location "$GENESYS_REGION" --forceUnlock
 ```
 
+### Alternative – import through the portal (`.i3InboundFlow`)
+
+If you prefer to import via Architect → Save ▾ → Import, generate the native
+file first (Archy must publish the YAML to an org once, then export it in
+Architect's native format):
+
+```bash
+scripts/genesys/make-i3inboundflow.sh
+# → architect/Branch-Inbound-Main.i3InboundFlow
+```
+
+Then in Architect: Flows → Inbound Call → **Add** (any name) → Save ▾ →
+**Import** → select the `.i3InboundFlow` → Import → Save → Publish.
+Importing replaces the whole configuration of the flow you import into.
+When importing into a *different* org, Architect re-resolves queues and the
+data table by name and shows validation errors for anything missing.
+
+To inspect what is inside an exported file:
+`python scripts/genesys/decode-i3flow.py decode architect/Branch-Inbound-Main.i3InboundFlow > /tmp/flow.json`.
+
 Then open Admin → Architect → `Branch Inbound Main` and check:
 
 1. Data Table Lookup action references `BranchDirectory` and all 6 output
